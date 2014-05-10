@@ -1,0 +1,36 @@
+
+<p>This is the partial for view 1.</p>
+
+<div>
+    Game Level:<select ng-model="$parent.currentLevel" ng-options="gl for gl in gameLevels" ng-change="updateWordsForLevel()">
+    </select>
+    <br>
+	<ul>
+		<li ng-repeat="word in wordsInLevel">{{word.word.word}}<br> {{word.distractors}}
+	</ul>
+	
+	
+
+	   <a href="#/view3">Start The Game</a>
+ 	<br><br>
+	<select ng-model="$parent.currentLanguage" ng-options="c for c in languages" ng-change="updateWordsForLanguage()">
+    </select>
+     LANGUAGE IS {{currentLanguage}}
+ <ul>
+
+
+		<ul>
+			<li ng-repeat="word in words">{{word.word}}
+		</ul>
+		<ul>
+        <li ng-repeat="word in words">
+
+            {{getLetters(word.word).length}}
+             {{ word.word}}<br><br>
+            <span ng-if="getLetters(word.word).length > 3">{{ word.word}}</span>
+
+        </li>
+    </ul>
+</ul>
+</div>
+

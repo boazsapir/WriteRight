@@ -1,0 +1,204 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+.brokenWord{
+	position: relative;
+	font-size: 96;
+		height:140px;
+		color:blue;
+//		 background: pink;
+		margin-left: auto;
+		margin-right: auto;
+//		margin-top: 100px;
+	text-align: center;
+		width: 100%;
+	}
+.brokenWord.ng-hide-add{
+  transition:5s linear all;
+	opacity:1;	
+}
+.brokenWord.ng-hide-add-active{
+		opacity:0;	
+}
+.brokenWord1.ng-hide-remove{
+  transition:5s linear all;
+	opacity:0;
+}
+.brokenWord1.ng-hide-remove-active{
+		opacity:1;	
+		color:red;
+}
+.solvedWord{
+	position: relative;
+	color: green;
+	font-size: 96;
+	height:0px;
+//	 background: yellow;
+	margin-left: auto;
+	margin-right: auto;
+//			margin-top: 100px;
+			text-align: center;
+		width: 100%;
+}
+.letterInWord {
+		position: relative;
+		font-size: 96;
+	
+//		left: 20%;
+		// background: magenta;
+	  }
+.letterInWord1.ng-enter {
+	transition:1s linear all;
+	color: yellow;
+-webkit-transform: skew(30deg,20deg);
+}
+.letterInWord1.ng-enter-active {
+	color: red;
+    -webkit-transform: skew(0deg,0deg);	
+}
+.distractorsList {
+
+//	 background: red;
+	height: 100px;
+	width: 50%;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+.distractor {
+		position: relative;
+	color: black;
+	font-size: 48;
+	top: 30px;
+	// background: gray;
+//	bottom: 100px;
+ //		left: 20%;
+}
+.distractor.ng-enter {
+transition:1s linear all;
+  opacity:0;
+  -webkit-transform:  skew(30deg,20deg); 
+  	
+}
+
+.distractor.ng-enter-active {
+  opacity:1;
+    -webkit-transform: skew(0deg,0deg);
+}
+.distractor.ng-enter-stagger {
+  /* this will have a 100ms delay between each successive leave animation */
+  -webkit-transition-delay: 0.3s;
+  transition-delay: 0.3s;
+ 
+  /* in case the stagger doesn't work then these two values
+   must be set to 0 to avoid an accidental CSS inheritance */
+  -webkit-transition-duration: 0s;
+  transition-duration: 0s;
+}
+
+@-webkit-keyframes blinker {  
+  from { opacity: 0.0; }
+  to { opacity: 1.0; }
+}
+.feedbackToPlayer1 {
+	 -webkit-animation-name: blinker;  
+  -webkit-animation-iteration-count: 1;  
+  -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
+  -webkit-animation-duration: 2s; 
+	color: blue;
+	font-size: 36;
+	margin-top: 50px;
+
+}
+.feedbackToPlayer {
+-webkit-transform: rotate(15deg	);
+	opacity:0;	
+	color: blue;
+	font-size: 36;
+	margin-top: 50px;
+}
+.feedbackToPlayer.ng-hide-remove {
+  
+    transition:1s linear all;
+	opacity:0;
+		font-size: 12;
+-webkit-transform: rotate(0deg);
+	  display:block!important;
+}
+.feedbackToPlayer.ng-hide-remove-active {
+	font-size: 72;
+	opacity:1;
+-webkit-transform: rotate(15deg);
+
+}
+
+.feedbackMessage{
+	position: relative;
+	font-size: 42;
+}
+.startButton {
+	font-size: 32;
+	background: rgb(66, 184, 221); /* this is a light blue */
+	margin-top: 100px;
+	width: 220px;
+}
+
+.feedbackArea {
+	// background: green;
+	height: 200px;
+	text-align: center;
+}
+.myTestClass1{
+	 background: black;
+	 color: white;
+}
+.myTestClass2	{
+	 background: brown;
+	 color: yellow;
+}
+.gameBoard {
+	background-image: url(../img/bckg.png);
+	height: 700px;
+}
+.topSpaceBar{
+	height: 80px;
+}
+.duck{
+    position: absolute;
+    bottom:130px;
+    left: 340px;
+	display: inline;
+}
+.levelHeader{
+	top: 40px;
+	text-align: right;
+}
+

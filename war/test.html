@@ -1,0 +1,24 @@
+  <script>
+var audio = new Audio('https://translate.google.com/translate_tts?ie=utf-8&tl=en&q=hello'	);
+//audio.src ='audio/translate_tts.mp3';
+//audio.play();
+   audio.addEventListener('canplaythrough', function() 
+		  {
+		  	window.alert('can play');
+		      audio.play();
+		  });
+//   audio.src ='https://translate.google.com/translate_tts?ie=utf-8&tl=en&q=Hello';
+   var section, frame;
+
+   section   = document.getElementsByTagName( "head" )[ 0 ];
+   frame     = document.createElement( "iframe" );
+   frame.src = 'https://translate.google.com/translate_tts?ie=utf-8&tl=en&q=Good';
+
+   section.appendChild( frame ); 
+
+
+</script>
+<a href="https://translate.google.com/translate_tts?key=AIzaSyDQEwCwLpPRppZH2PCnCfKb7-EqtEdPHpI&ie=utf-8&tl=en&q=you">HELLO</a>
+
+<audio src="https://translate.google.com/translate_tts?ie=utf-8&tl=en&q=hello" autoplay>
+</audio>

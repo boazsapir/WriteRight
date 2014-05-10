@@ -1,0 +1,26 @@
+<div class="gameboard">
+<span class="levelHeader"><h1>مستوى {{currentLevel}}</h1></span>
+<p>
+
+<div class="topSpaceBar"></div> 
+
+ <div class="brokenWord" ng-hide="wordSolved">
+ <span class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:1 track by $index">&nbsp;{{letter}}</span>
+ </div>
+ <div class="solvedWord" ng-show="wordSolved">
+ {{solvedWord}}
+ </div>
+
+
+ <div class="distractorsList">
+ <span>&nbsp;</span>
+<span ng-repeat="distractor in currentDistractors" class="distractor" ng-click="letterSelected(distractor)">
+<span ng-hide="wordSolved">&nbsp;&nbsp;{{distractor}}</span></span>
+</div>
+<div class="feedbackArea">
+<p ng-show="feedbackVisible" class="feedbackMessage">{{messageToPlayer}}</p>
+<span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">للمستوى التالي</button></span>	
+</div>
+ <span class="duck" ng-class="duckCssVar"><img src='img/duck.png'></span>
+ </div>
+ 

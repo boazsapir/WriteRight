@@ -1,0 +1,126 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://fast-gate-545.appspot.com/_ah/api",
+  "name" : "guestbook",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://fast-gate-545.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "guestbook.greetings.insert" : {
+      "path" : "void",
+      "httpMethod" : "post",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Guestbook.insertEntry",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "guestbook.guestbook.getAllEntries" : {
+      "path" : "guestentrycollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Guestbook.getAllEntries",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "guestbook.guestbook.getEntry" : {
+      "path" : "guestentry/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Guestbook.getEntry",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "GuestEntry" : {
+        "id" : "GuestEntry",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GuestEntryCollection" : {
+        "id" : "GuestEntryCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "GuestEntry"
+            }
+          }
+        }
+      }
+    },
+    "methods" : {
+      "com.writeright.mytest.Guestbook.insertEntry" : {
+        "request" : {
+          "$ref" : "GuestEntry"
+        }
+      },
+      "com.writeright.mytest.Guestbook.getAllEntries" : {
+        "response" : {
+          "$ref" : "GuestEntryCollection"
+        }
+      },
+      "com.writeright.mytest.Guestbook.getEntry" : {
+        "response" : {
+          "$ref" : "GuestEntry"
+        }
+      }
+    }
+  }
+}
