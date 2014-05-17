@@ -259,6 +259,9 @@
           "word" : {
             "type" : "string"
           },
+          "imageFileName" : {
+            "type" : "string"
+          },
           "languageCode" : {
             "type" : "string"
           }

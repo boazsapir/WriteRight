@@ -7,11 +7,20 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
  	<script type='text/javascript'>
-  		function startApp() {
-	  		window.init();
+ 	  		function startApp() {
 
-		}
-  	</script>
+
+			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+						.test(navigator.userAgent)) {
+					//	window.alert('mobile');
+					document.isMobile = true;
+				}
+				document.useJQueryDraggable = document.isMobile;
+				jQuery.event.props.push('dataTransfer');
+				window.init();
+
+			}
+		</script>
 	<link rel="stylesheet" href="css/app.css"/>
      <title>Reading Game</title>
 </head>
@@ -45,7 +54,9 @@ if (SystemProperty.environment.value() ==
 %>
  <script>var gapiRoot = "<%=gapiRoot%>";</script>
  <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
- <script src="../bower_components/jquery/src/jquery.js"></script>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+<script src="./jquery.ui.touch-punch.js"></script>
  <script src="./bower_components/angular/angular.js"></script>
  <script src="./bower_components/angular-route/angular-route.js"></script>
  <script src="./bower_components/angular-animate/angular-animate.js"></script>

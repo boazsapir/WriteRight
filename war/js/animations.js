@@ -12,6 +12,7 @@ myApp.animation('.brokenWord',function(){
 			var y = x.scope();
 
 			}
+			
 
 	//,
 //		beforeAddClass: function(element, className, done){	
@@ -77,11 +78,62 @@ myApp.animation('.jumpDuck',function(){
 	return{
 
 
+		beforeAddClass:  function(element, done){
+			var tl = new TimelineLite({paused:true,
+				onComplete:function(){angular.element(element).scope().duckImage = 'duck';}});
+			tl.to(element, 1, {bottom: "+48px"})
+			.to(element, 1, {bottom: "280px", ease:Bounce.easeOut});
+			tl.play();
+
+		}
+	};
+}
+);
+myApp.animation('.scoreChange',function(){
+	return{
+
+
 	beforeAddClass:  function(element, done){
 		var tl = new TimelineLite({paused:false});
-		tl.to(element, 1, {bottom: "+40px"})
-		.to(element, 1, {bottom: "130px", ease:Bounce.easeOut});
+		tl.to(element, 0.5, {fontSize: "64px", color: "black", repeat:2, repeatDelay:0.5})
+		.to(element, 0.5, {fontSize: "48px", color: "green"});
 
+		}
+	};
+}
+);
+myApp.animation('.wrongLetterSelection',function(){
+	return{
+
+
+	beforeAddClass:  function(element, done){
+		var x = angular.element(element);
+		var y = x.scope();
+//		window.alert(element[0].textContent.charAt(2));
+//		window.alert(element[0].attributes.distractor.nodeValue);
+		if (y.selectedLetter == element[0].attributes.distractor.nodeValue){
+		var tl = new TimelineLite({paused:false});
+		tl.to(element, 0.5, {backgroundColor: "red"})
+		.to(element, 2, {backgroundColor: "none"});
+	}
+
+		}
+	};
+}
+);
+
+
+myApp.animation('.letterDropTarget',function(){
+	// not in use for now because did not work well with ng-show mechanism 
+	return{
+
+
+		beforeAddClass:  function(element, done){
+
+				tl.to(element, 1, {backgroundColor: "green", opacity:1});
+
+
+	
 		}
 	};
 }

@@ -22,4 +22,73 @@ directive('appVersion', ['version', function(version) {
 	return {
 		link: link
 	};
+}])
+.directive('draggableLetter', [function(){
+
+	function link(scope, element, attributes) {
+		if (document.useJQueryDraggable){
+			element.draggable({ revert: true });
+		}
+		else{
+			element.attr("draggable", true);			
+		}
+
+		element.bind("dragstart", function(eventObject) {
+
+			if (!document.useJQueryDraggable){
+				eventObject.originalEvent.dataTransfer.setData("text", attributes.distractor);
+			}
+		});
+        element.bind("touchstart", function(eventObject){
+        	 
+        });
+	}
+	return {
+		link: link
+	};
+
+}])
+.directive('letterDropTarget', ['wordHandler', function(wordHandler){
+    return {
+        restrict: "A",
+        link: function (scope, element, attributes, ctlr) {
+        	if (document.useJQueryDraggable){
+        		if (attributes.letter == wordHandler.placeHolderChar('ar')){
+        			element.droppable({
+        				activeClass: "letterDropTarget",
+        				hoverClass: "letterDropTarget"
+        			});       			
+        		}
+        		else{
+        			element.droppable();
+        		}
+        	}
+            element.bind("dragover", function(eventObject){
+            	if(attributes.letter == wordHandler.placeHolderChar('ar')){
+            		eventObject.preventDefault();
+   
+            		element.addClass("letterDropTarget");
+            	}
+            });
+  
+            element.bind("dragleave", function(eventObject){
+        		element.removeClass("letterDropTarget");
+            });
+ 
+            element.bind("drop", function(eventObject) {
+            	
+            	element.removeClass("letterDropTarget");
+
+            	if (document.useJQueryDraggable){
+            		scope.letterSelected(eventObject.originalEvent.srcElement.innerText.replace(/\s+/g,""));
+            	}
+            	else{
+            		scope.letterSelected(eventObject.originalEvent.dataTransfer.getData("text"));
+            	}
+            	// cancel actual UI element from dropping, since the angular will recreate a the UI element
+            	eventObject.preventDefault();
+            });
+
+        }
+    };
 }]);

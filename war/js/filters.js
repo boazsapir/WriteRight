@@ -19,7 +19,7 @@ filter('interpolate', ['version', function(version) {
 
 				}
 				else{
-					retVal[i] = "ـــ";
+					retVal[i] = wordHandler.placeHolderChar('ar');
 				}
 			}
 		}

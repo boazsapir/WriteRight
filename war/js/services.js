@@ -28,5 +28,13 @@ angular.module('myApp.services', []).
 		  }
 		  return retVal;
 	  };
+	  this.placeHolderChar = function(language){
+		  if (language.toUpperCase() == 'AR' ){
+			  return "ـــ"; // it looks the same but it is not
+		  }
+		  else{
+			  return "_";
+		  }
+	  };
   });
  

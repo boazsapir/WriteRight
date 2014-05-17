@@ -46,36 +46,47 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 	};
 	$scope.firstWord = true;
 	$scope.wordSolved = false;
+	$scope.score = 0;
+	$scope.mistakesCounter = 0;
 	$scope.duckCssVar = "";
+	$scope.scoreCssVar = "";
 	$scope.solvedWord = "";
 	$scope.feedbackVisible = false;
+	$scope.duckImage = 'duck';
 	$scope.showFirstWord= function(){
 		$scope.wordSolved = false;
 		$scope.duckCssVar = "";
+		$scope.scoreCssVar = "";
 	};
 	$scope.letterSelected = function(letter){
 		$scope.messageToPlayer = "";
+		$scope.selectedLetter = letter;
 
 		if (letter == $scope.extractedLetter){
 //			window.alert("Correct :)");
 
 
 			$scope.duckCssVar = 'jumpDuck';
+			$scope.scoreCssVar = 'scoreChange';
+			$scope.duckImage = 'duckHappy';
 			$scope.playWordAudio();
 			$scope.feedbackVisible = false;
 			$scope.messageToPlayer = "";
 			$scope.solvedWord = $scope.$parent.currentWord;
+			$scope.score += (Math.max(5 - $scope.mistakesCounter, 2));
+			$scope.mistakesCounter = 0;
 			$scope.$parent.currentWord = "";
-			$scope.wordSolved=true;
+
 			$scope.firstWord = false;
-
-
+//			$scope.distractorCssVar="correctLetterSelection";
+			$scope.wordSolved=true;
 			$scope.$apply();
 			// have to clear currentWord first otherwise ng-repeat with track by index 
 			// does not recognize the change of letters and ng-enter not activated
 	
 			$timeout(function(){
 				// do this only after timeout so the distractors will be animated correctly when set, otherwise they are set while still invisible
+
 				if (!$scope.selectNextWord()){
 	
 					if ($scope.currentLevel < $scope.gameLevels.length){
@@ -90,15 +101,19 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 
 					$scope.wordSolved = false;
 					$scope.duckCssVar = "";
+					$scope.scoreCssVar = "";
 				}
 			}, 3000);
 
 		}
 		else{
-
+			$scope.playWordAudio();
 			$scope.messageToPlayer = ":( حاول مرة أخرى";
+			$scope.distractorCssVar="wrongLetterSelection";
+			$scope.mistakesCounter++;
 //			window.alert("Wrong :(");
 			$scope.$apply($scope.setFeedbackVisibility(false));
+			$scope.distractorCssVar="";
 			$timeout(function(){
 				$scope.feedbackVisible = true;
 			    }, 0);
@@ -112,6 +127,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 		$scope.updateWordsForLevel();
 		$scope.wordSolved = false;
 		$scope.duckCssVar = "";
+		$scope.scoreCssVar = "";
 		$scope.solvedWord = "";
 		$scope.clearDistractors();
 		$scope.apply();
@@ -159,6 +175,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 
 		  if ($scope.nextWordIndex < $scope.wordsInLevel.length){
 			  $scope.currentWord = $scope.wordsInLevel[$scope.nextWordIndex].word.word;
+			  $scope.wordImage = $scope.wordsInLevel[$scope.nextWordIndex].word.imageFileName;
 			  $scope.extractedLetterIndex = 1;
 			  var letters = wordHandler.letterSeparator($scope.currentWord);
 //			  $scope.extractedLetter = $scope.currentWord.charAt($scope.extractedLetterIndex-1);

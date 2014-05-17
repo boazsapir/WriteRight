@@ -10,7 +10,9 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.SynchronizationType;
 import javax.inject.Named;
 
 import com.google.api.server.spi.config.Api;
@@ -23,7 +25,9 @@ public class Words {
 	private static	   Map<String, String> properties; 
 	private static	    EntityManagerFactory emf;
 	private static final Logger log = Logger.getLogger(Words.class.getName()); 
-	static{
+	  @PersistenceContext
+	  EntityManager em1;
+	  static{
 	    properties = new HashMap();
 	    if (SystemProperty.environment.value() ==
 	          SystemProperty.Environment.Value.Production) {
@@ -178,6 +182,7 @@ log.info("before query");
 	  }
 	  @ApiMethod(name = "getGameLevels", path = "get_game_levels")
 	  public MyIntegerList getGameLevels(@Named("gameTypeId")int id) {
+
 		  EntityManager em = emf.createEntityManager();
 //		  Query query = em.createQuery("SELECT w FROM Word w Where w.language=:arg1");
 //		  query.setParameter("arg1", language);	
@@ -198,8 +203,9 @@ log.info("before query");
 	  }
 	  @ApiMethod(name = "getWordsByLevel", path = "get_words_for_level")
 	  public List<WordInLevel> getWordsByLevel(@Named("gameTypeId")int id, @Named("levelIndex") int index) {
-		  List<WordInLevel> retVal = null;
-		  EntityManager em = emf.createEntityManager();
+
+		    List<WordInLevel> retVal = null;
+		  EntityManager em = emf.createEntityManager(/*SynchronizationType.SYNCHRONIZED*/);
 		  Query query = em.createQuery("SELECT gl FROM GameLevel gl Where gl.gameType.id=:arg1 And gl.levelIndex=:arg2");
 		  query.setParameter("arg1", id);
 		  query.setParameter("arg2", index);
@@ -211,7 +217,6 @@ log.info("before query");
 		  else{
 			  retVal = null;
 		  }
-	
 		  em.close();
 		  return retVal;
 	  }
