@@ -1,45 +1,28 @@
 /* app css stylesheet */
-.menu {
-	list-style: none;
-	border-bottom: 0.1em solid black;
-	margin-bottom: 2em;
-	padding: 0 0 0.5em;
+
+@font-face
+{
+font-family: AdobeArabic;
+src: url(../font/AdobeArabic-Regular.otf);
+}
+@font-face
+{
+font-family: AdobeArabic;
+src: url(../font/AdobeArabic-Bold.otf);
+}
+@font-face
+{
+font-family: ArabicTraditional;
+src: url(../font/trado.ttf);
 }
 
-.menu:before {
-	content: "[";
-}
-
-.menu:after {
-	content: "]";
-}
-
-.menu>li {
-	display: inline;
-}
-
-.menu>li:before {
-	content: "|";
-	padding-right: 0.3em;
-}
-
-.menu>li:nth-child(1):before {
-	content: "";
-	padding: 0;
-}
-
-.brokenWord {
+.gameBoard {
 	position: relative;
-	font-size: 96;
-	height: 140px;
-	color: blue; //
-	background: pink;
-	margin-left: auto;
-	margin-right: auto; //
-	margin-top: 100px;
-	text-align: center;
-	width: 100%;
+	width: 916px;
+	height: 688px;
+	background-image: url(../img/background.png);
 	direction: rtl;
+//	font-family: Tahoma;
 }
 
 .brokenWord.ng-hide-add {
@@ -61,25 +44,33 @@
 	color: red;
 }
 
+.brokenWord {
+	position: relative;
+	height: 140px;
+	color: #00576e;
+//	background: pink;
+	direction: rtl;
+	text-align: center;
+	width: 70%;
+}
 .solvedWord {
 	position: relative;
-	color: green;
-	font-size: 96;
-	height: 0px; //
-	background: yellow;
-	margin-left: auto;
-	margin-right: auto; //
-	margin-top: 100px;
+	color: #00576e;
+	font-size: 80;
+	font-wight: bold;
+	height: 0px;
+//	background: yellow;
 	text-align: center;
-	width: 100%;
+	direction: rtl;
+	width: 70%;
 }
 
 .letterInWord {
 	position: relative;
-	font-size: 96;
+	font-size: 88;
+	font-weight: bold;
 	direction: rtl;
-	//left: 20%;
-	//background: magenta;
+//	background: magenta;
 	text-align: center;
 }
 
@@ -95,25 +86,34 @@
 }
 
 .distractorsList { 
+		position: relative;
 //	background: red;
 	height: 100px;
-	width: 50%;
-	margin-right: auto;
-	margin-left: auto;
 	text-align: center;
 	direction: rtl;
+	top: -20px;
+	width: 70%;
+	
+}
+
+.innerDistractor {
+	display: inline-block;
+	background : white; 
+	padding-right: 5px;
+	padding-left: 5px;
+	margin-right:4px;
+	margin-left: 4px;
+	height: 75px;	
 }
 
 .distractor {
 	position: relative;
-	color: black;
-	font-size: 48;
+	color: #00576e;
+	font-size: 45px;
 	top: 30px;
 	display: inline-block;
 	direction: rtl; 
-	// background : gray; 
 
-	// left: 20%;
 }
 
 .distractor.ng-enter {
@@ -137,33 +137,7 @@
 	transition-duration: 0s;
 }
 
-@
--webkit-keyframes blinker {from { opacity:0.0;
-	
-}
 
-to {
-	opacity: 1.0;
-}
-
-}
-.feedbackToPlayer1 {
-	-webkit-animation-name: blinker;
-	-webkit-animation-iteration-count: 1;
-	-webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
-	-webkit-animation-duration: 2s;
-	color: blue;
-	font-size: 36;
-	margin-top: 50px;
-}
-
-.feedbackToPlayer {
-	-webkit-transform: rotate(15deg);
-	opacity: 0;
-	color: blue;
-	font-size: 36;
-	margin-top: 50px;
-}
 
 .feedbackToPlayer.ng-hide-remove {
 	transition: 1s linear all;
@@ -182,6 +156,8 @@ to {
 .feedbackMessage {
 	position: relative;
 	font-size: 42;
+	color: #00576e;
+
 }
 
 .startButton {
@@ -189,12 +165,16 @@ to {
 	background: rgb(66, 184, 221); /* this is a light blue */
 	margin-top: 100px;
 	width: 220px;
+	color: #00576e;
 }
 
-.feedbackArea { //
-	background: green;
+.feedbackArea {
+	position: relative;
 	height: 200px;
+	direction: rtl;
+//	background: orange;
 	text-align: center;
+	width: 70%;
 }
 
 .myTestClass1 {
@@ -207,57 +187,112 @@ to {
 	color: yellow;
 }
 
-.gameBoard {
-	position: relative;
-	height: 700px;
-	background-image: url(../img/bckg.png);
-}
 
 .topSpaceBar {
-	height: 80px;
+	height: 20px;
 }
-
-.duck {
-	position: absolute;
-	bottom: 280px;
-	left: 70px;
-	display: inline;
-	z-index: 2;
+.midSpaceBar1 {
+	height: 70px;
 }
 
 .levelHeader {
 	position: relative;
-	top: 20px;
-	right: 20px;
+	top: 40px;
+	right: 30px;
+	color: #339bb7;
+	font-size: 12;
 	text-align: right;
 }
 
-.scoreContainer {
-	position: absolute;
-	top: 50px;
-	left: 30px;
-	width: 120px;
-	height: 60px;
-	text-align : center;
-	background-image: url(../img/scr4.png); //
-	background: yellow;
-	text-align: center;
-}
 
-.score {
-	text-align: center;
-	font-size: 48px;
-	color: green;
-}
 .letterDropTarget{
 	background: lightgray;
 }
-.wordImage{
-	position: absolute;
-	top: 250px;
-	right: 100px;
+.wordImageContainer{
+	position: relative;
+	height: 170px;
+	width: 70%;
+	top: 40px;
+//	background: yellow;
+}
+.wordImage {
+	position: relative;
+	top: 24px;
+	margin: auto;
+	display: block;
 	height: auto;
 	width: auto;
 	max-height: 80px;
 	max-width: 80px;
 }
+
+.wordImageBackground {
+	position: relative;
+	background-image: url(../img/picture-frame.png);
+	height: 128px;
+	width: 128px;
+	margin: 0 auto;
+
+
+}
+.trampolineContainer{
+	position: absolute;
+	left: 110px;
+	bottom: 10px;
+	width: 160px;
+	height: 600px;
+}
+.score {
+	position: absolute;
+	top: 30px;
+	left: 36px;
+	// had to reduce padding size from original height (sun image height);
+	height: 62px; 
+	width: 88px;
+//	height: 88px;
+//	width: 88px;
+	padding-top: 26px;
+	background-image: url(../img/sunSmall.png);	
+//	background-position: 169px 169px;
+	text-align: center;	
+	font-size: 30px;
+	color: #00576e;
+}
+.duck {
+	position: absolute;
+	bottom: 118px;
+	left: 32px;
+	z-index: 4;
+}
+.trampoline {
+	position: absolute;
+	width: 133px;
+	height: 74px;
+	left: 13px; bottom : 100px;
+	z-index: 3;
+	background-image: url(../img/trampoline1.png);
+	bottom: 100px;
+}
+
+.spring {
+	
+	position: absolute;
+	display: block;
+	bottom: 30px;
+	left: 29px;
+	z-index: 2;
+	width: 102px;
+	height: 94px;
+	background-image: url(../img/spring1.png);
+	}
+
+.springBase {
+	position: absolute;
+	display: block;
+	bottom: 0px;
+	left: 9px;
+
+	width: 142px;
+	height:53px;
+	background-image: url(../img/spring-base.png);
+	}

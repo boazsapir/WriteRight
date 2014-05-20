@@ -49,14 +49,22 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 	$scope.score = 0;
 	$scope.mistakesCounter = 0;
 	$scope.duckCssVar = "";
+	$scope.trampolineCssVar = "";
+	$scope.springCssVar="";
 	$scope.scoreCssVar = "";
+	$scope.scoreContainerCssVar = "";
 	$scope.solvedWord = "";
 	$scope.feedbackVisible = false;
 	$scope.duckImage = 'duck';
+	$scope.springImage = 'spring1';
+	$scope.trampolineImage = 'trampoline1';
 	$scope.showFirstWord= function(){
 		$scope.wordSolved = false;
 		$scope.duckCssVar = "";
+		$scope.trampolineCssVar = "";
+		$scope.springCssVar="";
 		$scope.scoreCssVar = "";
+		$scope.scoreContainerCssVar = "";
 	};
 	$scope.letterSelected = function(letter){
 		$scope.messageToPlayer = "";
@@ -67,7 +75,10 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 
 
 			$scope.duckCssVar = 'jumpDuck';
+			$scope.trampolineCssVar = 'jumpTrampoline';
+			$scope.springCssVar='jumpSpring';
 			$scope.scoreCssVar = 'scoreChange';
+			$scope.scoreContainerCssVar = 'scoreContainerBig';
 			$scope.duckImage = 'duckHappy';
 			$scope.playWordAudio();
 			$scope.feedbackVisible = false;
@@ -91,24 +102,29 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 	
 					if ($scope.currentLevel < $scope.gameLevels.length){
 						$scope.startButtonVisible=true;
+						$scope.scoreCssVar = "";
+						$scope.scoreContainerCssVar = "";
 					}
 					else{
 						$scope.feedbackVisible = true;
-						$scope.messageToPlayer = "!انتهى";
+						$scope.messageToPlayer = "انتهى!";
 					}
 				}
 				else{
 
 					$scope.wordSolved = false;
 					$scope.duckCssVar = "";
+					$scope.trampolineCssVar = "";
+					$scope.springCssVar="";
 					$scope.scoreCssVar = "";
+					$scope.scoreContainerCssVar = "";
 				}
-			}, 3000);
+			}, 2500);
 
 		}
 		else{
 			$scope.playWordAudio();
-			$scope.messageToPlayer = ":( حاول مرة أخرى";
+			$scope.messageToPlayer = " حاول مرة أخرى :(";
 			$scope.distractorCssVar="wrongLetterSelection";
 			$scope.mistakesCounter++;
 //			window.alert("Wrong :(");
@@ -124,25 +140,32 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 	$scope.startNextLevel = function(){
 		$scope.$parent.currentLevel++;
 		$scope.startButtonVisible = false;
-		$scope.updateWordsForLevel();
 		$scope.wordSolved = false;
 		$scope.duckCssVar = "";
+		$scope.trampolineCssVar = "";
+		$scope.springCssVar="";
 		$scope.scoreCssVar = "";
+		$scope.scoreContainerCssVar = "";
 		$scope.solvedWord = "";
 		$scope.clearDistractors();
+		$scope.updateWordsForLevel();
 		$scope.apply();
 	};
 
 });
 	myApp.controller('Main', function($window, $scope, wordHandler) {
 		$scope.playWordAudio = function(){
-			var section   = document.getElementsByTagName( "head" )[ 0 ];
-			if (typeof $scope.frame != 'undefined'){
-				section.removeChild( $scope.frame ); 				   
-			};
-			$scope.frame  = document.createElement( "iframe" );
-			$scope.frame.src = 'https://translate.google.com/translate_tts?ie=utf-8&tl=ar&q=' + $scope.currentWord;
-			section.appendChild( $scope.frame ); 
+	//		var section   = document.getElementsByTagName( "head" )[ 0 ];
+	//		if (typeof $scope.frame != 'undefined'){
+	//			section.removeChild( $scope.frame ); 				   
+	//		};
+	//		$scope.frame  = document.createElement( "iframe" );
+	//		$scope.frame.src = 'audio/' + $scope.wordImage.replace(".jpg", ".mp3");
+	//		section.appendChild( $scope.frame ); 
+			var audio = new Audio();
+
+			audio.src ='audio/' + $scope.wordImage.replace(".jpg", ".mp3");
+			audio.play();	
 		};
 		$window.init= function() {
 		  $scope.$apply($scope.load_words_lib);
@@ -156,7 +179,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 			  $scope.getLanguages();
 			  $scope.updateWordsForLanguage();
 			  $scope.getGameLevels();	
-			  $scope.updateWordsForLevel();	
+
 
 
 
@@ -176,10 +199,19 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 		  if ($scope.nextWordIndex < $scope.wordsInLevel.length){
 			  $scope.currentWord = $scope.wordsInLevel[$scope.nextWordIndex].word.word;
 			  $scope.wordImage = $scope.wordsInLevel[$scope.nextWordIndex].word.imageFileName;
-			  $scope.extractedLetterIndex = 1;
+			  $scope.extractedLetterIndex = $scope.gameLevels[$scope.currentLevel-1].letterNumToComplete;
+//			  if ($scope.extractedLetterIndex == -1){
+//				  $scope.extractedLetterIndex = $scope.currentWord.length;
+//			  }
 			  var letters = wordHandler.letterSeparator($scope.currentWord);
 //			  $scope.extractedLetter = $scope.currentWord.charAt($scope.extractedLetterIndex-1);
-			  $scope.extractedLetter = letters[$scope.extractedLetterIndex-1];
+			  if ($scope.extractedLetterIndex != -1){
+				  $scope.extractedLetter = letters[$scope.extractedLetterIndex-1];
+			  }
+			  else{
+				  $scope.extractedLetter = letters[letters.length-1];
+			  }
+
 //			  if ($scope.extractedLetterIndex < $scope.currentWord.length &&
 //			  diacritics.isDiacritic($scope.currentWord.charAt($scope.extractedLetterIndex))){
 //			  $scope.extractedLetter += $scope.currentWord.charAt($scope.extractedLetterIndex);
@@ -225,18 +257,22 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 		  
 	  };
 	  $scope.updateWordsForLevel = function(){
-		  var requestData = {};
-		  requestData.gameTypeId = 1;	
-		  requestData.levelIndex = $scope.currentLevel;
+//		  var requestData = {};
+//		  requestData.gameTypeId = 1;	
+//		  requestData.levelIndex = $scope.currentLevel;
+		  
+		  $scope.wordsInLevel = $scope.gameLevels[$scope.currentLevel-1].wordsInLevel;
+		  $scope.nextWordIndex = 0;
+		  $scope.selectNextWord();
 
 
-		  gapi.client.words.getWordsByLevel(requestData).execute(function(resp) {
-			  $scope.wordsInLevel = resp.items;
-			  $scope.nextWordIndex = 0;
-			  $scope.selectNextWord();
-			  $scope.is_words_backend_ready = true;
-			  $scope.$apply();
-		  });
+//		  gapi.client.words.getWordsByLevel(requestData).execute(function(resp) {
+//			  $scope.wordsInLevel = resp.items;
+//			  $scope.nextWordIndex = 0;
+//			  $scope.selectNextWord();
+//			  $scope.is_words_backend_ready = true;
+//			  $scope.$apply();
+//		  });
 
 	  };
 	  $scope.getWords = function() {
@@ -250,7 +286,9 @@ myApp.controller('MyCtrl3', function($scope, $timeout) {
 	        var requestData = {};
 	        requestData.gameTypeId = 1;	
 		  gapi.client.words.getGameLevels(requestData).execute(function(resp) {
-			  $scope.gameLevels = resp.value;
+			  $scope.gameLevels = resp.items;
+			  $scope.updateWordsForLevel();	
+			  $scope.is_words_backend_ready = true;
 			  $scope.$apply();
 		  });
 	  };

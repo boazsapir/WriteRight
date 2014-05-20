@@ -3,3 +3,5 @@ war/WEB-INF/classes/*
 war/WEB-INF/lib/*
 *.jar
 *.class
+*.ttf
+*.otf

@@ -2,27 +2,36 @@
 <span class="levelHeader"><h1>مستوى {{currentLevel}}</h1></span>
 <p>
 
-<div class="topSpaceBar"></div> 
-
+<div class="wordImageContainer">
+ <div class="wordImageBackground"><img class="wordImage" src="img/{{wordImage}}"></div>
+ </div>
+ <div class="midSpaceBar1"></div>
+ 
  <div class="brokenWord" ng-hide="wordSolved">
- <span class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:1 track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span></span>
+ <span class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span></span>
  </div>
  <div class="solvedWord" ng-show="wordSolved">
  {{solvedWord}}
  </div>
 
+
  <div class="distractorsList">
 <span ng-repeat="distractor in currentDistractors" class="distractor" ng-click="letterSelected(distractor)" draggable-letter="true" distractor={{distractor}}>
-&nbsp;&nbsp;<span ng-hide="wordSolved" ng-class="distractorCssVar" distractor={{distractor}}>{{distractor}}</span>&nbsp;</span>
+<span class="innerDistractor" ng-hide="wordSolved" ng-class="distractorCssVar" distractor={{distractor}}>{{distractor}}</span>&nbsp;</span>
 </div>
 <div class="feedbackArea">
 <p ng-show="feedbackVisible" class="feedbackMessage">{{messageToPlayer}}</p>
 <span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">للمستوى التالي</button></span>	
 </div>
- <span class="duck" ng-class="duckCssVar"><img ng-src='img/{{duckImage}}.png'></span>
 
- <div class="scoreContainer" >
- <span class="score" ng-class="scoreCssVar" ng-hide="score==0">{{score}}</span>
- </div>
- <div ><img class="wordImage" src="img/{{wordImage}}"></div>
+
+
+<div class=  "trampolineContainer">
+ <div class="score" ng-class="scoreCssVar">{{score}}</div>
+ <div class="duck" ng-class="duckCssVar"><img ng-src='img/{{duckImage}}.png'></div>
+<div class="trampoline" ng-class="trampolineCssVar" ></div>
+
+<div class="spring" ng-class="springCssVar" ></div>
+<div class="springBase"></div>
+</div>
   </div>

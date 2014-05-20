@@ -54,7 +54,7 @@ myApp.animation('.letterInWord',function(){
 	return{
 		enter:  function(element, done){
 //			TweenLite.set(element, {bottom: "120px"});
-			TweenLite.set(element, {opacity:1, color: "blue"} );
+			TweenLite.set(element, {opacity:1} );
 			TweenLite.from(element, 2,  {opacity:0, right: "-=200px", ease:Power2.easeIn } );
 		}
 
@@ -68,7 +68,7 @@ myApp.animation('.feedbackMessage',function(){
 
 	removeClass:  function(element, done){
 		TweenLite.set(element, {opacity: 0, fontSize: 48});
-		TweenLite.to(element, 3, {color: "blue", opacity:1});
+		TweenLite.to(element, 3, {opacity:1});
 		TweenLite.from(element, 2, {left: "-200px", ease:Elastic.easeOut});
 		}
 	};
@@ -79,10 +79,50 @@ myApp.animation('.jumpDuck',function(){
 
 
 		beforeAddClass:  function(element, done){
+			angular.element(element).scope().sunImage = 'sunSmall';
+			angular.element(element).scope().springImage = 'spring2';
+			angular.element(element).scope().trampolineImage = 'trampoline2';
+
 			var tl = new TimelineLite({paused:true,
-				onComplete:function(){angular.element(element).scope().duckImage = 'duck';}});
-			tl.to(element, 1, {bottom: "+48px"})
-			.to(element, 1, {bottom: "280px", ease:Bounce.easeOut});
+				onComplete:function(){
+									  angular.element(element).scope().duckImage = 'duck';
+										}});
+			tl.to(element, 1, {bottom: "320px"})
+			.to(element, 1, {bottom: "118px", ease:Bounce.easeOut});
+			tl.play();
+
+		}
+	};
+}
+);
+myApp.animation('.jumpSpring',function(){
+	return{
+
+		beforeAddClass:  function(element, done){
+
+			var tl = new TimelineLite({paused:true});
+
+			tl.set(element, {width: '64px', left: '48px'})
+			.to(element, 1, {backgroundImage: "url(img/spring2.png)", height: '162px'})
+			.set(element, {height: '94px', width: '102px', left: '29px'})
+			.to(element, 1, {backgroundImage: "url(img/spring1.png)" });
+			tl.play();
+
+		}
+	};
+}
+);
+myApp.animation('.jumpTrampoline',function(){
+	return{
+
+		beforeAddClass:  function(element, done){
+
+			var tl = new TimelineLite({paused:true});
+
+			tl
+			.to(element, 1, {backgroundImage: "url(img/trampoline2.png)", height: '78px', width: '124px', left: '18px', bottom: '+=50px'})
+			.set(element, {height: '74px', bottom: '-=50px'})
+			.to(element, 1, {backgroundImage: "url(img/trampoline1.png)", width: '133px', height: '74px', left: '13px'});
 			tl.play();
 
 		}
@@ -93,15 +133,24 @@ myApp.animation('.scoreChange',function(){
 	return{
 
 
-	beforeAddClass:  function(element, done){
-		var tl = new TimelineLite({paused:false});
-		tl.to(element, 0.5, {fontSize: "64px", color: "black", repeat:2, repeatDelay:0.5})
-		.to(element, 0.5, {fontSize: "48px", color: "green"});
+		beforeAddClass:  function(element, done){
+			var tl = new TimelineLite({paused:true});
+		
+			tl.set(element,{backgroundImage: 'url(../img/sunBig.png)',backgroundPosition: '169px 169px'})
+			.to(element, 1, {width: '247px', height: '151px',
+			top: '-16px', paddingTop: '95px', left: '-43px', fontSize: '60px', backgroundPosition: '247px 246px', ease:Power1.easeIn});
 
+				tl.to(element, 1, { backgroundPosition: '169px 169px',width: '88px', height: '62px', top: '30px',
+					paddingTop: '26px', left: '36px', fontSize: '30px',ease:Power1.easeIn});
+				tl.set(element, {backgroundImage: 'url(../img/sunSmall.png)', backgroundPosition: '0px 0px'});
+
+			tl.play();
 		}
 	};
+
 }
 );
+
 myApp.animation('.wrongLetterSelection',function(){
 	return{
 

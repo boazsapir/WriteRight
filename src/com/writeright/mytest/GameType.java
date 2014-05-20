@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.api.server.spi.config.AnnotationBoolean;
+import com.google.api.server.spi.config.ApiResourceProperty;
+
 @Entity
 @Table(name = "GameType")
 public class GameType {
@@ -36,6 +39,7 @@ public class GameType {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
 	public List<GameLevel> getGameLevels() {
 		return gameLevels;
 	}	

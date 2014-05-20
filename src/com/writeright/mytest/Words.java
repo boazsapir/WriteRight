@@ -181,21 +181,21 @@ log.info("before query");
 
 	  }
 	  @ApiMethod(name = "getGameLevels", path = "get_game_levels")
-	  public MyIntegerList getGameLevels(@Named("gameTypeId")int id) {
+	  public List<GameLevel> getGameLevels(@Named("gameTypeId")int id) {
 
 		  EntityManager em = emf.createEntityManager();
 //		  Query query = em.createQuery("SELECT w FROM Word w Where w.language=:arg1");
 //		  query.setParameter("arg1", language);	
 //		  List<Word> result = query.getResultList();
 		  GameType gameType = em.find(GameType.class, id);
-		  MyIntegerList retVal = null;
+		  List<GameLevel> retVal = null;
 		  if (gameType != null){
 			  List<GameLevel> gameLevels =  gameType.getGameLevels();
-			  List<Integer> levels = new ArrayList<Integer>();
-			  for (int i=0; i<gameLevels.size();i++){
-				  levels.add(gameLevels.get(i).getLevelIndex());
-			  }
-			  retVal = new MyIntegerList(levels);
+//			  List<Integer> levels = new ArrayList<Integer>();
+//			  for (int i=0; i<gameLevels.size();i++){
+//				  levels.add(gameLevels.get(i).getLevelIndex());
+//			  }
+			  retVal = gameLevels;
 		  }
 	
 		  em.close();

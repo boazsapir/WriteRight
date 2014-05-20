@@ -24,6 +24,9 @@ angular.module('myApp.services', []).
 			  retVal[j] = letters[i];
 			  if (i<letters.length-1 && diacritics.isDiacritic(letters[i+1])){
 				  retVal[j] += letters[++i];
+				  if (i<letters.length-1 && diacritics.isDiacritic(letters[i+1])){
+					  retVal[j] += letters[++i]; // case of 2 diacritics for one letter (e.g. shadda) 
+				  }
 			  }
 		  }
 		  return retVal;

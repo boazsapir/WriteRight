@@ -26,15 +26,16 @@
 </head>
 
   <body ng-controller="Main">
-    <h1>مرحبا</h1>
 
 
+<!-- 
 <ul class="menu"  ng-show="is_words_backend_ready">
     <li><a href="#/view1">view1</a></li>
     <li><a href="#/view2">view2</a></li>
   </ul>
+   -->
 
- <div ng-view ng-show="is_words_backend_ready" style="margin-left: auto; margin-right: auto;display: block; width:800px"></div>
+ <div ng-view ng-show="is_words_backend_ready" style="margin-left: auto; margin-right: auto;display: block;width:1200"></div>
 
 
  <!--  <div>Angular seed app: v<span app-version></span></div>

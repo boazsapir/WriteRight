@@ -285,11 +285,17 @@
         "properties" : {
           "name" : {
             "type" : "string"
-          },
-          "gameLevels" : {
+          }
+        }
+      },
+      "StringCollection" : {
+        "id" : "StringCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
             "type" : "array",
             "items" : {
-              "$ref" : "GameLevel"
+              "type" : "string"
             }
           }
         }
@@ -339,26 +345,14 @@
           }
         }
       },
-      "StringCollection" : {
-        "id" : "StringCollection",
+      "GameLevelCollection" : {
+        "id" : "GameLevelCollection",
         "type" : "object",
         "properties" : {
           "items" : {
             "type" : "array",
             "items" : {
-              "type" : "string"
-            }
-          }
-        }
-      },
-      "MyIntegerList" : {
-        "id" : "MyIntegerList",
-        "type" : "object",
-        "properties" : {
-          "value" : {
-            "type" : "array",
-            "items" : {
-              "type" : "integer"
+              "$ref" : "GameLevel"
             }
           }
         }
@@ -433,7 +427,7 @@
       },
       "com.writeright.mytest.Words.getGameLevels" : {
         "response" : {
-          "$ref" : "MyIntegerList"
+          "$ref" : "GameLevelCollection"
         }
       },
       "com.writeright.mytest.Words.getAllLanguages" : {
