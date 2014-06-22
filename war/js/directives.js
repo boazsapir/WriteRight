@@ -80,10 +80,10 @@ directive('appVersion', ['version', function(version) {
             	element.removeClass("letterDropTarget");
 
             	if (document.useJQueryDraggable){
-            		scope.letterSelected(eventObject.originalEvent.srcElement.innerText.replace(/\s+/g,""));
+            		scope.letterSelected(eventObject.originalEvent.srcElement.innerText.replace(/\s+/g,""), scope.$index);
             	}
             	else{
-            		scope.letterSelected(eventObject.originalEvent.dataTransfer.getData("text"));
+            		scope.letterSelected(eventObject.originalEvent.dataTransfer.getData("text"), scope.$index);
             	}
             	// cancel actual UI element from dropping, since the angular will recreate a the UI element
             	eventObject.preventDefault();

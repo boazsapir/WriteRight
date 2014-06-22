@@ -16,7 +16,7 @@
 					document.isMobile = true;
 				}
 				document.useJQueryDraggable = document.isMobile;
-				jQuery.event.props.push('dataTransfer');
+//				jQuery.event.props.push('dataTransfer');
 				window.init();
 
 			}
@@ -61,6 +61,7 @@ if (SystemProperty.environment.value() ==
  <script src="./bower_components/angular/angular.js"></script>
  <script src="./bower_components/angular-route/angular-route.js"></script>
  <script src="./bower_components/angular-animate/angular-animate.js"></script>
+   <script src="./bower_components/angular-touch/angular-touch.js"></script>
    <script src="./js/app.js"></script>
   <script src="./js/services.js"></script>
   <script src="./js/controllers.js"></script>

@@ -1,14 +1,14 @@
 <div class="gameboard">
 <span class="levelHeader"><h1>مستوى {{currentLevel}}</h1></span>
 <p>
-
+<div ng-show="gameStarted">
 <div class="wordImageContainer">
  <div class="wordImageBackground"><img class="wordImage" src="img/{{wordImage}}"></div>
  </div>
  <div class="midSpaceBar1"></div>
  
  <div class="brokenWord" ng-hide="wordSolved">
- <span class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span></span>
+ <span class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span></span>
  </div>
  <div class="solvedWord" ng-show="wordSolved">
  {{solvedWord}}
@@ -16,15 +16,16 @@
 
 
  <div class="distractorsList">
-<span ng-repeat="distractor in currentDistractors" class="distractor" ng-click="letterSelected(distractor)" draggable-letter="true" distractor={{distractor}}>
+<span ng-repeat="distractor in currentDistractors" class="distractor" ng-click="letterSelected(distractor, null)" draggable-letter="true" distractor={{distractor}}>
 <span class="innerDistractor" ng-hide="wordSolved" ng-class="distractorCssVar" distractor={{distractor}}>{{distractor}}</span>&nbsp;</span>
 </div>
 <div class="feedbackArea">
 <p ng-show="feedbackVisible" class="feedbackMessage">{{messageToPlayer}}</p>
-<span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">للمستوى التالي</button></span>	
+<span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">للمستوى التالي</button></span>
 </div>
 
-
+</div>
+<div ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">START</button></div>
 
 <div class=  "trampolineContainer">
  <div class="score" ng-class="scoreCssVar">{{score}}</div>

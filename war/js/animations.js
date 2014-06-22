@@ -163,7 +163,7 @@ myApp.animation('.wrongLetterSelection',function(){
 		if (y.selectedLetter == element[0].attributes.distractor.nodeValue){
 		var tl = new TimelineLite({paused:false});
 		tl.to(element, 0.5, {backgroundColor: "red"})
-		.to(element, 2, {backgroundColor: "none"});
+		.to(element, 2, {backgroundColor: "white"});
 	}
 
 		}

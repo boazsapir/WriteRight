@@ -8,13 +8,21 @@ filter('interpolate', ['version', function(version) {
     return String(text).replace(/\%VERSION\%/mg, version);
   };
 }]).filter('displayWordForGame', function(wordHandler){
-	return function(word, letterToExclude) {
+	return function(word, letterToExclude, solvedLetters) {
 		var retVal = new Array();
 		if (typeof word != 'undefined'){
 			var letters = wordHandler.letterSeparator(word);
 
 			for (var i = 0; i < letters.length; i++) {
-				if (!(i == letterToExclude-1 || (letterToExclude == -1 && i==letters.length-1))){
+				if (letterToExclude == 0){
+					if (solvedLetters[i]){
+						retVal[i] = letters[i];						
+					}
+					else{
+						retVal[i] = wordHandler.placeHolderChar('ar');
+					}
+				}
+				else if (!(i == letterToExclude-1 || (letterToExclude == -1 && i==letters.length-1))){
 					retVal[i] = letters[i];
 
 				}

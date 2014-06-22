@@ -82,6 +82,21 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "words.words.getAllLanguages" : {
+      "path" : "languagecollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.getAllLanguages",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "words.getGameLevels" : {
       "path" : "get_game_levels",
       "httpMethod" : "GET",
@@ -97,21 +112,6 @@
             "required" : true
           }
         },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "words.words.getAllLanguages" : {
-      "path" : "languagecollection",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.getAllLanguages",
-      "request" : {
         "body" : "empty"
       },
       "response" : {
@@ -300,6 +300,33 @@
           }
         }
       },
+      "Language" : {
+        "id" : "Language",
+        "type" : "object",
+        "properties" : {
+          "languageCode" : {
+            "type" : "string"
+          },
+          "words" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Word"
+            }
+          }
+        }
+      },
+      "LanguageCollection" : {
+        "id" : "LanguageCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Language"
+            }
+          }
+        }
+      },
       "GameLevel" : {
         "id" : "GameLevel",
         "type" : "object",
@@ -319,14 +346,14 @@
           "gameType" : {
             "$ref" : "GameType"
           },
+          "gameTypeName" : {
+            "type" : "string"
+          },
           "words" : {
             "type" : "array",
             "items" : {
               "$ref" : "Word"
             }
-          },
-          "gameTypeName" : {
-            "type" : "string"
           }
         }
       },
@@ -353,33 +380,6 @@
             "type" : "array",
             "items" : {
               "$ref" : "GameLevel"
-            }
-          }
-        }
-      },
-      "Language" : {
-        "id" : "Language",
-        "type" : "object",
-        "properties" : {
-          "languageCode" : {
-            "type" : "string"
-          },
-          "words" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Word"
-            }
-          }
-        }
-      },
-      "LanguageCollection" : {
-        "id" : "LanguageCollection",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Language"
             }
           }
         }
@@ -425,14 +425,14 @@
           "$ref" : "StringCollection"
         }
       },
-      "com.writeright.mytest.Words.getGameLevels" : {
-        "response" : {
-          "$ref" : "GameLevelCollection"
-        }
-      },
       "com.writeright.mytest.Words.getAllLanguages" : {
         "response" : {
           "$ref" : "LanguageCollection"
+        }
+      },
+      "com.writeright.mytest.Words.getGameLevels" : {
+        "response" : {
+          "$ref" : "GameLevelCollection"
         }
       },
       "com.writeright.mytest.Words.getWordsByLevel" : {
