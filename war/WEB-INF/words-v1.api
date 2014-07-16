@@ -82,21 +82,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "words.words.getAllLanguages" : {
-      "path" : "languagecollection",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.getAllLanguages",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "words.getGameLevels" : {
       "path" : "get_game_levels",
       "httpMethod" : "GET",
@@ -112,6 +97,21 @@
             "required" : true
           }
         },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "words.words.getAllLanguages" : {
+      "path" : "languagecollection",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.getAllLanguages",
+      "request" : {
         "body" : "empty"
       },
       "response" : {
@@ -187,6 +187,31 @@
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "words.words.reduceDistractors" : {
+      "path" : "reduceDistractors/{id}/{reduceTo}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.reduceDistractors",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "reduceTo" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
       }
     },
     "words.words.addGameLevel" : {
@@ -300,33 +325,6 @@
           }
         }
       },
-      "Language" : {
-        "id" : "Language",
-        "type" : "object",
-        "properties" : {
-          "languageCode" : {
-            "type" : "string"
-          },
-          "words" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Word"
-            }
-          }
-        }
-      },
-      "LanguageCollection" : {
-        "id" : "LanguageCollection",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Language"
-            }
-          }
-        }
-      },
       "GameLevel" : {
         "id" : "GameLevel",
         "type" : "object",
@@ -384,6 +382,33 @@
           }
         }
       },
+      "Language" : {
+        "id" : "Language",
+        "type" : "object",
+        "properties" : {
+          "languageCode" : {
+            "type" : "string"
+          },
+          "words" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Word"
+            }
+          }
+        }
+      },
+      "LanguageCollection" : {
+        "id" : "LanguageCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Language"
+            }
+          }
+        }
+      },
       "WordInLevelCollection" : {
         "id" : "WordInLevelCollection",
         "type" : "object",
@@ -425,14 +450,14 @@
           "$ref" : "StringCollection"
         }
       },
-      "com.writeright.mytest.Words.getAllLanguages" : {
-        "response" : {
-          "$ref" : "LanguageCollection"
-        }
-      },
       "com.writeright.mytest.Words.getGameLevels" : {
         "response" : {
           "$ref" : "GameLevelCollection"
+        }
+      },
+      "com.writeright.mytest.Words.getAllLanguages" : {
+        "response" : {
+          "$ref" : "LanguageCollection"
         }
       },
       "com.writeright.mytest.Words.getWordsByLevel" : {
@@ -454,6 +479,8 @@
         "response" : {
           "$ref" : "WordCollection"
         }
+      },
+      "com.writeright.mytest.Words.reduceDistractors" : {
       },
       "com.writeright.mytest.Words.addGameLevel" : {
         "request" : {

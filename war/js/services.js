@@ -11,7 +11,7 @@ angular.module('myApp.services', []).
 
 	  this.isDiacritic = function(letter){
 		  var code = letter.charCodeAt(0);
-		  if (code >= 1612 && code <= 1631){
+		  if ((code >= 1612 && code <= 1631) || code == 1575){
 			  return true;
 		  }
 		  return false;
@@ -73,11 +73,11 @@ angular.module('myApp.services', []).
 		  
 		function appendBuffer(context, buffer1, buffer2) {
 	      var numberOfChannels = Math.min( buffer1.numberOfChannels, buffer2.numberOfChannels );
-	      var tmp = context.createBuffer( numberOfChannels, (buffer1.length + 70000 + buffer2.length), buffer1.sampleRate );
+	      var tmp = context.createBuffer( numberOfChannels, (buffer1.length + 0 + buffer2.length), buffer1.sampleRate );
 	      for (var i=0; i<numberOfChannels; i++) {
 	        var channel = tmp.getChannelData(i);
 	        channel.set( buffer1.getChannelData(i), 0);
-	        channel.set( buffer2.getChannelData(i), buffer1.length + 70000);
+	        channel.set( buffer2.getChannelData(i), buffer1.length + 0);
 	      }
 	      return tmp;
 	    }

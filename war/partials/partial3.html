@@ -1,14 +1,14 @@
 <div class="gameboard">
-<span class="levelHeader"><h1>مستوى {{currentLevel}}</h1></span>
+<span class="levelHeader"><h1>Level {{currentLevel}}</h1></span>
 <p>
 <div ng-show="gameStarted">
 <div class="wordImageContainer">
- <div class="wordImageBackground"><img class="wordImage" src="img/{{wordImage}}"></div>
+ <div class="wordImageBackground"><img draggable="false" class="wordImage" src="img/{{wordImage}}"></div>
  </div>
  <div class="midSpaceBar1"></div>
  
  <div class="brokenWord" ng-hide="wordSolved">
- <span class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span></span>
+ <div class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span></div	>
  </div>
  <div class="solvedWord" ng-show="wordSolved">
  {{solvedWord}}
@@ -16,20 +16,24 @@
 
 
  <div class="distractorsList">
-<span ng-repeat="distractor in currentDistractors" class="distractor" ng-click="letterSelected(distractor, null)" draggable-letter="true" distractor={{distractor}}>
-<span class="innerDistractor" ng-hide="wordSolved" ng-class="distractorCssVar" distractor={{distractor}}>{{distractor}}</span>&nbsp;</span>
+<span ng-repeat="distractor in currentDistractors" class="distractor" ng-click="letterSelected(distractor, null)"  distractor={{distractor}}>
+<span class="innerDistractor" ng-hide="wordSolved" ng-class="distractorCssVar" draggable-letter="true" distractor={{distractor}}>{{distractor}}</span>&nbsp;</span>
 </div>
 <div class="feedbackArea">
-<p ng-show="feedbackVisible" class="feedbackMessage">{{messageToPlayer}}</p>
-<span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">للمستوى التالي</button></span>
+<span ng-show="feedbackVisible" ng-class="feedbackMessageCssVar">{{messageToPlayer}}</span><br>
+<span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">Next Level</button></span>
+</div>
 </div>
 
+<div class="userFeedbackButton">
+<a href=""> <img src="/img/feedbackButton.png" ng-click="openFeedbackDialog()"></a>
 </div>
-<div ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">START</button></div>
 
-<div class=  "trampolineContainer">
+<div ng-show="startButtonVisible && currentLevel==0" class="initialStartButtonArea"><button class="initalStartButton" ng-click="startNextLevel()">Start</button></div>
+
+<div class="trampolineContainer">
  <div class="score" ng-class="scoreCssVar">{{score}}</div>
- <div class="duck" ng-class="duckCssVar"><img ng-src='img/{{duckImage}}.png'></div>
+ <div class="duck" ng-class="duckCssVar"><img  draggable="false" ng-src='img/{{duckImage}}.png'></div>
 <div class="trampoline" ng-class="trampolineCssVar" ></div>
 
 <div class="spring" ng-class="springCssVar" ></div>

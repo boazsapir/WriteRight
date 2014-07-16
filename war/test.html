@@ -75,14 +75,13 @@
 				audioSource.playbackRate.value = 1;
 			});
 
-		}
-		;
+		};
 
 		// When the song is loaded asynchronously try to play it.
 		request.onload = function() {
 			window.alert('loaded');
 			play(request.response);
-		}
+		};
 
 		request.send();
 	}

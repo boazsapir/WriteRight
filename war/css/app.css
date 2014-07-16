@@ -22,8 +22,19 @@ src: url(../font/trado.ttf);
 	height: 688px;
 	background-image: url(../img/background.png);
 	direction: rtl;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 //	font-family: Tahoma;
 }
+
+.userFeedbackButton{
+	position: absolute;	
+	bottom: 20;
+	right: 5;
+}
+
 
 .brokenWord.ng-hide-add {
 	transition: 5s linear all;
@@ -52,11 +63,13 @@ src: url(../font/trado.ttf);
 	direction: rtl;
 	text-align: center;
 	width: 70%;
+//	top: -20px;
+//	padding-top: 20px;
 }
 .solvedWord {
 	position: relative;
 	color: #00576e;
-	font-size: 80;
+	font-size: 88;
 	font-wight: bold;
 	height: 0px;
 //	background: yellow;
@@ -67,6 +80,10 @@ src: url(../font/trado.ttf);
 
 .letterInWord {
 	position: relative;
+	display: inline-block;
+	height: 120px;
+	padding-top: 20px;
+	top: -20px;
 	font-size: 88;
 	font-weight: bold;
 	direction: rtl;
@@ -74,21 +91,10 @@ src: url(../font/trado.ttf);
 	text-align: center;
 }
 
-.letterInWord1.ng-enter {
-	transition: 1s linear all;
-	color: yellow;
-	-webkit-transform: skew(30deg, 20deg);
-}
-
-.letterInWord1.ng-enter-active {
-	color: red;
-	-webkit-transform: skew(0deg, 0deg);
-}
-
 .distractorsList { 
-		position: relative;
+	position: relative;
 //	background: red;
-	height: 100px;
+	height: 90px;
 	text-align: center;
 	direction: rtl;
 	top: -20px;
@@ -153,28 +159,50 @@ src: url(../font/trado.ttf);
 	-webkit-transform: rotate(15deg);
 }
 
-.feedbackMessage {
-	position: relative;
-	font-size: 42;
-	color: #00576e;
-
-}
-
-.startButton {
-	font-size: 32;
-	background: rgb(66, 184, 221); /* this is a light blue */
-	margin-top: 100px;
-	width: 220px;
-	color: #00576e;
-}
-
 .feedbackArea {
 	position: relative;
-	height: 200px;
-	direction: rtl;
+//	height: 80px;
+	direction: ltr;
 //	background: orange;
 	text-align: center;
 	width: 70%;
+	padding-top: 20px;
+}
+
+.feedbackMessage {
+	position: relative;
+	font-size: 36;
+	color: #00576e;
+//	background: white;
+}
+.endOfGameMessage {
+	position: relative;
+	font-size: 60;
+	background: rgb(66, 184, 221); /* this is a light blue */
+	color: #00576e;
+	top: 40px;
+}
+
+.startButton {
+	position: relative;
+	font-size: 32;
+	background: rgb(66, 184, 221); /* this is a light blue */
+	top: 40px;
+	width: 220px;
+	color: #00576e;
+}
+.initalStartButton {
+	font-size: 32;
+	background: rgb(66, 184, 221); /* this is a light blue */
+	width: 220px;
+	color: #00576e;
+}
+.initialStartButtonArea{
+	position: relative;
+	width: 75%;
+	text-align: center;	
+//	background: gray;
+	margin-top: 250px;
 }
 
 .myTestClass1 {
@@ -188,20 +216,18 @@ src: url(../font/trado.ttf);
 }
 
 
-.topSpaceBar {
-	height: 20px;
-}
 .midSpaceBar1 {
-	height: 70px;
+	height: 10px;
+//	background: gray;
 }
 
 .levelHeader {
 	position: relative;
-	top: 40px;
-	right: 30px;
+	top: 10px;
+	left: 15px;
 	color: #339bb7;
 	font-size: 12;
-	text-align: right;
+	text-align: left;
 }
 
 
@@ -210,35 +236,34 @@ src: url(../font/trado.ttf);
 }
 .wordImageContainer{
 	position: relative;
-	height: 170px;
+	height: 298px;
 	width: 70%;
-	top: 40px;
+	top: 0px;
 //	background: yellow;
 }
 .wordImage {
-	position: relative;
-	top: 24px;
-	margin: auto;
-	display: block;
-	height: auto;
-	width: auto;
-	max-height: 80px;
-	max-width: 80px;
+	position: absolute;  
+    top: 0;  
+    bottom: 0;  
+    left: 0;  
+    right: 0;  
+    margin: auto;  
+	max-height: 200px;
+	max-width: 200px;
 }
 
 .wordImageBackground {
 	position: relative;
 	background-image: url(../img/picture-frame.png);
-	height: 128px;
-	width: 128px;
+	height: 256px;
+	width: 256px;
 	margin: 0 auto;
-
-
 }
+
 .trampolineContainer{
 	position: absolute;
-	left: 110px;
-	bottom: 10px;
+	left: 60px;
+	bottom: 20px;
 	width: 160px;
 	height: 600px;
 }

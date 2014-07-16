@@ -6,8 +6,8 @@ var myApp = angular.module('myApp.animations', []);
 myApp.animation('.brokenWord',function(){
 	return{
 		removeClass:  function(element, className, done){
-			TweenLite.set(element, {opacity:1} );
-			TweenLite.from(element, 2,  {opacity:0, right: "-=200px", ease:Power2.easeIn } );
+			TweenLite.set(element, {opacity:0} );
+			TweenLite.fromTo(element, 2, {opacity:0}, {opacity:1, ease:Power2.easeIn } );
 			var x = angular.element(element);
 			var y = x.scope();
 
@@ -54,8 +54,8 @@ myApp.animation('.letterInWord',function(){
 	return{
 		enter:  function(element, done){
 //			TweenLite.set(element, {bottom: "120px"});
-			TweenLite.set(element, {opacity:1} );
-			TweenLite.from(element, 2,  {opacity:0, right: "-=200px", ease:Power2.easeIn } );
+			TweenLite.set(element, {opacity:0} );
+			TweenLite.fromTo(element, 2, {opacity:0}, {opacity:1, ease:Power2.easeIn } );
 		}
 
 	};
@@ -67,9 +67,11 @@ myApp.animation('.feedbackMessage',function(){
 
 
 	removeClass:  function(element, done){
-		TweenLite.set(element, {opacity: 0, fontSize: 48});
-		TweenLite.to(element, 3, {opacity:1});
-		TweenLite.from(element, 2, {left: "-200px", ease:Elastic.easeOut});
+		if(done.valueOf() == "ng-hide"){
+			TweenLite.set(element, {opacity: 0});
+			TweenLite.to(element, 3, {opacity:1});
+			TweenLite.from(element, 2, {left: "-200px", ease:Elastic.easeOut});
+		}
 		}
 	};
 }

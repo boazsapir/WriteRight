@@ -153,6 +153,26 @@ log.info("before query");
 		  em.getTransaction().commit();
 		  em.close();
 	  }
+	  
+	  public void reduceDistractors(@Named("id")int id, @Named("reduceTo")int reduceTo){
+
+		  EntityManager em = emf.createEntityManager();
+		  em.getTransaction().begin();
+		  WordInLevel wordInLevel = em.find(WordInLevel.class, id);
+		  List<String> distractors = wordInLevel.getDistractors();
+		  if (distractors != null){
+			  for (int i=0; i<distractors.size();){
+				  if(i >= reduceTo){
+					  distractors.remove(i);
+				  }
+				  else{
+					  i++;
+				  }
+			  }
+		  }			  
+		  em.getTransaction().commit();
+		  em.close();
+	  }
 
 	  public List<String> getDistractors(@Named("id")int id){
 		  	EntityManager em = emf.createEntityManager();
