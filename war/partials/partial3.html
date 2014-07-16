@@ -1,14 +1,15 @@
 <div class="gameboard">
-<span class="levelHeader"><h1>Level {{currentLevel}}</h1></span>
-<p>
-<div ng-show="gameStarted">
+
+<div ng-show="currentLevel>0">
+<span class="levelHeader" ng-show="currentLevel>0"><h1>Level {{currentLevel}}</h1></span>
 <div class="wordImageContainer">
  <div class="wordImageBackground"><img draggable="false" class="wordImage" src="img/{{wordImage}}"></div>
  </div>
  <div class="midSpaceBar1"></div>
  
  <div class="brokenWord" ng-hide="wordSolved">
- <div class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span></div	>
+ <div class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span>
+ </div>
  </div>
  <div class="solvedWord" ng-show="wordSolved">
  {{solvedWord}}
@@ -39,4 +40,4 @@
 <div class="spring" ng-class="springCssVar" ></div>
 <div class="springBase"></div>
 </div>
-  </div>
+ </div>

@@ -55,7 +55,6 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 	$scope.setFeedbackVisibility = function(isVisible){
 		$scope.feedbackVisible = isVisible;
 	};
-	$scope.gameStarted = false;
 	$scope.startButtonVisible=true;
 	$scope.currentLevel = 0;
 	$scope.firstWord = true;
@@ -281,7 +280,6 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 		$scope.solvedWord = "";
 		$scope.clearDistractors();
 		$scope.updateWordsForLevel();
-		$scope.gameStarted = true;
 		$scope.apply();
 	};
 	  $scope.updateWordsForLevel = function(){

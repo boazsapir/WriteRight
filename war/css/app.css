@@ -202,7 +202,7 @@ src: url(../font/trado.ttf);
 	width: 75%;
 	text-align: center;	
 //	background: gray;
-	margin-top: 250px;
+	padding-top: 250px;
 }
 
 .myTestClass1 {
