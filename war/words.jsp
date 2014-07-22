@@ -86,6 +86,7 @@ Please send your feedback by email to <b>tuval@appy2write.com</b>
 </div>
 </script>
  <script>var gapiRoot = "<%=gapiRoot%>";</script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
  <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>

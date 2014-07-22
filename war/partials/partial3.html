@@ -30,11 +30,11 @@
 <a href=""> <img src="/img/feedbackButton.png" ng-click="openFeedbackDialog()"></a>
 </div>
 
-<div ng-show="startButtonVisible && currentLevel==0" class="initialStartButtonArea"><button class="initalStartButton" ng-click="startNextLevel()">Start</button></div>
+<div ng-show="startButtonVisible && currentLevel==0" class="initialStartButtonArea"><button class="initalStartButton" ng-click="startGame()">Start</button></div>
 
 <div class="trampolineContainer">
  <div class="score" ng-class="scoreCssVar">{{score}}</div>
- <div class="duck" ng-class="duckCssVar"><img  draggable="false" ng-src='img/{{duckImage}}.png'></div>
+ <div class="duck" ng-class="duckCssVar"><img draggable="false" ng-src='img/{{duckImage}}.png'></div>
 <div class="trampoline" ng-class="trampolineCssVar" ></div>
 
 <div class="spring" ng-class="springCssVar" ></div>

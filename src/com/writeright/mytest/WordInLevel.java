@@ -34,8 +34,14 @@ public class WordInLevel {
 	   @JoinColumn(name="gameLevel",referencedColumnName="id")
 	GameLevel gameLevel;
 
-	List<String> distractors = new ArrayList<String>(); // String and not chars because a distractor can be letter + diacritic
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "wordInLevel")
+	 private List<GameTaskInstance> gameTaskInstances = new ArrayList<GameTaskInstance>();
 
+	List<String> distractors = new ArrayList<String>(); // String and not chars because a distractor can be letter + diacritic
+	
+	public int getId() {
+		return id;
+	}
 	public Word getWord() {
 		return word;
 	}
@@ -59,5 +65,13 @@ public class WordInLevel {
 
 	public void setDistractors(List<String> distractors) {
 		this.distractors = distractors;
+	}
+	
+	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
+	public List<GameTaskInstance> getGameTaskInstances() {
+		return gameTaskInstances;
+	}
+	public void setGameTaskInstances(List<GameTaskInstance> gameTaskInstances) {
+		this.gameTaskInstances = gameTaskInstances;
 	}
 }

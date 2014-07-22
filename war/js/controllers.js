@@ -39,7 +39,7 @@ myApp.controller('MyCtrl1', function($scope) {
 	  };
 
 });
-myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService, ngDialog) {
+myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, audioService, ngDialog) {
 	var SoundFileNames = {
 			CORRECT_LETTER : "CorrectLetter.mp3",
 			CORRECT_WORD: "CorrectWord.mp3",
@@ -98,6 +98,31 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 //		$scope.distractorCssVar="correctLetterSelection";
 		$scope.wordSolved=true;
 		$scope.$apply();
+		var requestData = {};
+		requestData.letterSelections = $scope.wrongLetterSelections;
+		requestData.wordInLevelId = $scope.currentWordInLevelId;
+		var currentDate = new Date();
+		requestData.duration = Math.round((currentDate.getTime() - $scope.wordStartTime)/1000);
+
+		$scope.gameInstanceIdPromise = $scope.gameInstanceIdPromise.then(function(gameInstanceId) {
+
+			requestData.gameInstanceId = gameInstanceId;	
+			gapi.client.words.words.addGameTaskInstance(requestData).execute(function() {
+				//window.alert("");
+			});
+
+			return gameInstanceId;
+		}, function(reason) {
+			alert('Failed: ' + reason);
+			return reason;
+		}, function(update) {
+			alert('Got notification: ' + update);
+		});
+
+
+			//window.alert(resp.id);
+			//$scope.startNextLevel();  				
+		//});		
 		// have to clear currentWord first otherwise ng-repeat with track by index 
 		// does not recognize the change of letters and ng-enter not activated
 
@@ -181,6 +206,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 				}
 				else{
 					ga('send', 'event', 'dragWrongLetter', 'L'+$scope.currentLevel +' ' +$scope.currentWord +'-' + dropTragetLetterIndex, letter);									
+					$scope.wrongLetterSelections.push({index: dropTragetLetterIndex+1, letter: letter});
 					$scope.messageToPlayer = " Try Again :(";
 					$scope.distractorCssVar="wrongLetterSelection";
 					$scope.mistakesCounter++;
@@ -206,6 +232,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 		}
 		else{
 			ga('send', 'event', 'dragWrongLetter', 'L'+$scope.currentLevel +' ' +$scope.currentWord, letter);
+			$scope.wrongLetterSelections.push({index: $scope.extractedLetterIndex, letter: letter});
 			$scope.messageToPlayer =  " Try Again :(";
 			$scope.distractorCssVar="wrongLetterSelection";
 			$scope.mistakesCounter++;
@@ -221,14 +248,16 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 
 	};
 	  $scope.selectNextWord = function(){
-
+		  
 		  if ($scope.currentLevel > 0 && $scope.nextWordIndex < $scope.wordsInLevel.length){
 			  $scope.currentWord = $scope.wordsInLevel[$scope.nextWordIndex].word.word;
+			  $scope.currentWordInLevelId = $scope.wordsInLevel[$scope.nextWordIndex].id;
 			  $scope.wordImage = $scope.wordsInLevel[$scope.nextWordIndex].word.imageFileName;
 			  $scope.extractedLetterIndex = $scope.gameLevels[$scope.currentLevel-1].letterNumToComplete;
 //			  if ($scope.extractedLetterIndex == -1){
 //				  $scope.extractedLetterIndex = $scope.currentWord.length;
 //			  }
+			  $scope.wrongLetterSelections = [];
 			  var letters = wordHandler.letterSeparator($scope.currentWord);
 //			  $scope.extractedLetter = $scope.currentWord.charAt($scope.extractedLetterIndex-1);
 			  if ($scope.extractedLetterIndex == 0){
@@ -251,6 +280,9 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 //			  $scope.playWordAudio();
 			  $scope.setDistractors();
 			  $scope.nextWordIndex++;
+			  var currentDate = new Date();
+			  $scope.wordStartTime = currentDate.getTime();
+
 		  }
 		  else{
 			  $scope.currentWord = null;
@@ -267,26 +299,71 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 		  return true;
 
 	  };
-	$scope.startNextLevel = function(){
-		$scope.currentLevel++;
-		ga('send', 'event', 'button', 'click', 'startLevel'+$scope.currentLevel);
-		$scope.startButtonVisible = false;
-		$scope.wordSolved = false;
-		$scope.duckCssVar = "";
-		$scope.trampolineCssVar = "";
-		$scope.springCssVar="";
-		$scope.scoreCssVar = "";
-		$scope.scoreContainerCssVar = "";
-		$scope.solvedWord = "";
-		$scope.clearDistractors();
-		$scope.updateWordsForLevel();
-		$scope.apply();
-	};
+	  
+	  $scope.startGame = function(){
+			var requestData = {};
+			requestData.studentId = 1;	
+			var deferred = $q.defer();
+			gapi.client.words.words.newGameInstance(requestData).execute(function(resp) {
+				//window.alert(resp.id);
+				deferred.resolve(resp.id);
+			});
+			$scope.gameInstanceIdPromise = deferred.promise; 
+			$scope.startNextLevel();  				
+	  };
+
+	  $scope.startNextLevel = function(){
+		  $scope.currentLevel++;
+		  ga('send', 'event', 'button', 'click', 'startLevel'+$scope.currentLevel);
+		  /*
+		  var game_key = 'd3f23bd4ad5ab9e949f7786a060e934d';                                  
+			  var secret_key = 'cd3bdb7e8ca6876c13559e39c314878178d3d4f4';
+			  var category = "design";
+			   
+			  var message = {
+					  		event_id:'StartLevel',
+			  			   user_id:'randomUser1',
+			  			   session_id:'session_2',
+			  			   build:'1.0a',
+			  			   value: $scope.currentLevel,
+			  			   area: 'Level' + $scope.currentLevel
+			  			   };
+			   
+			  var json_message = JSON.stringify(message); 
+			  var md5_msg = CryptoJS.MD5(json_message + secret_key); 
+			  var header_auth_hex = CryptoJS.enc.Hex.stringify(md5_msg); 
+			   
+			  var gameanalyticsUrl = 'http://api-eu.gameanalytics.com/1/'+game_key+'/'+category;
+				$http({
+					method: 'POST',
+					url: gameanalyticsUrl,
+					data: json_message, 
+					headers: {"Content-Type": 'text/plain',
+						"Authorization": header_auth_hex }
+				}).success(function(data){
+
+				})
+				.error(function(data){
+				});
+				*/		
+
+		  $scope.startButtonVisible = false;
+		  $scope.wordSolved = false;
+		  $scope.duckCssVar = "";
+		  $scope.trampolineCssVar = "";
+		  $scope.springCssVar="";
+		  $scope.scoreCssVar = "";
+		  $scope.scoreContainerCssVar = "";
+		  $scope.solvedWord = "";
+		  $scope.clearDistractors();
+		  $scope.updateWordsForLevel();
+		  $scope.$apply();
+	  };
 	  $scope.updateWordsForLevel = function(){
 //		  var requestData = {};
 //		  requestData.gameTypeId = 1;	
 //		  requestData.levelIndex = $scope.currentLevel;
-		  
+
 		  $scope.wordsInLevel = $scope.gameLevels[$scope.currentLevel-1].wordsInLevel;
 		  $scope.nextWordIndex = 0;
 		  $scope.selectNextWord();
@@ -297,11 +374,11 @@ myApp.controller('MyCtrl3', function($scope, $timeout, wordHandler, audioService
 			  $scope.playWordAudio(false);
 		  }
 //		  gapi.client.words.getWordsByLevel(requestData).execute(function(resp) {
-//			  $scope.wordsInLevel = resp.items;
-//			  $scope.nextWordIndex = 0;
-//			  $scope.selectNextWord();
-//			  $scope.is_words_backend_ready = true;
-//			  $scope.$apply();
+//		  $scope.wordsInLevel = resp.items;
+//		  $scope.nextWordIndex = 0;
+//		  $scope.selectNextWord();
+//		  $scope.is_words_backend_ready = true;
+//		  $scope.$apply();
 //		  });
 
 	  };
@@ -380,9 +457,9 @@ myApp.controller('Main', function($window, $scope, $http) {
 
 		gapi.client.load('words', 'v1', function() {
 //			$scope.getWords();
-			$scope.currentLanguage = 'EN';
-			$scope.getLanguages();
-			$scope.updateWordsForLanguage();
+//			$scope.currentLanguage = 'EN';
+//			$scope.getLanguages();
+//			$scope.updateWordsForLanguage();
 			$scope.getGameLevels();	
 
 
@@ -392,7 +469,7 @@ myApp.controller('Main', function($window, $scope, $http) {
 		gapiRoot + '/_ah/api');
 
 	};
-
+/*
 	$scope.list = function() {
 		gapi.client.guestbook.guestbook.getAllEntries().execute(function(resp) {
 			$scope.entries = resp.items;
@@ -418,7 +495,7 @@ myApp.controller('Main', function($window, $scope, $http) {
 			$scope.$apply();
 		});
 	};
-
+*/
 	$scope.getGameLevels = function() {
 		var requestData = {};
 		requestData.gameTypeId = 1;	
@@ -449,6 +526,8 @@ myApp.controller('Main', function($window, $scope, $http) {
 
 		});
 	};
+	
+/*
 	$scope.getLanguages = function() {
 		gapi.client.words.words.getAllLanguageCodes().execute(function(resp) {
 //			window.alert(resp.items);
@@ -461,7 +540,7 @@ myApp.controller('Main', function($window, $scope, $http) {
 			$scope.$apply();
 		});
 	};
-
+*/
 
 });
 myApp.controller('FeedbackForm', function($window, $scope, $http, $timeout) {

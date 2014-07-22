@@ -24,18 +24,117 @@
     "maxAge" : 0
   },
   "methods" : {
-    "words.getWordsByLanguage" : {
-      "path" : "get_words_by_language",
+    "words.words.getGameInstance" : {
+      "path" : "gameinstance/{gameInstanceId}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.getWordsByLanguage",
+      "rosyMethod" : "com.writeright.mytest.Words.getGameInstance",
       "request" : {
         "parameters" : {
-          "languageCode" : {
-            "type" : "string",
+          "gameInstanceId" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "words.words.getDistractors" : {
+      "path" : "stringcollection/{id}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.getDistractors",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "words.words.reduceDistractors" : {
+      "path" : "reduceDistractors/{id}/{reduceTo}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.reduceDistractors",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "reduceTo" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "words.words.addStudent" : {
+      "path" : "addStudent",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.addStudent",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "words.words.addGameLevel" : {
+      "path" : "addGameLevel",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.addGameLevel",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "words.words.newGameInstance" : {
+      "path" : "newGameInstance/{studentId}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.newGameInstance",
+      "request" : {
+        "parameters" : {
+          "studentId" : {
+            "type" : "int32",
             "required" : true
           }
         },
@@ -61,27 +160,6 @@
         "body" : "empty"
       }
     },
-    "words.words.getDistractors" : {
-      "path" : "stringcollection/{id}",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.getDistractors",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int32",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "words.getGameLevels" : {
       "path" : "get_game_levels",
       "httpMethod" : "GET",
@@ -97,21 +175,6 @@
             "required" : true
           }
         },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "words.words.getAllLanguages" : {
-      "path" : "languagecollection",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.getAllLanguages",
-      "request" : {
         "body" : "empty"
       },
       "response" : {
@@ -159,51 +222,17 @@
         "body" : "empty"
       }
     },
-    "words.words.getAllLanguageCodes" : {
-      "path" : "mystringlist",
+    "words.words.getGameTaskInstance" : {
+      "path" : "gametaskinstance/{gameTaskInstanceId}",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.getAllLanguageCodes",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "words.words.getAllWords" : {
-      "path" : "wordcollection",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.getAllWords",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "words.words.reduceDistractors" : {
-      "path" : "reduceDistractors/{id}/{reduceTo}",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.reduceDistractors",
+      "rosyMethod" : "com.writeright.mytest.Words.getGameTaskInstance",
       "request" : {
         "parameters" : {
-          "id" : {
-            "type" : "int32",
-            "required" : true
-          },
-          "reduceTo" : {
+          "gameTaskInstanceId" : {
             "type" : "int32",
             "required" : true
           }
@@ -211,23 +240,7 @@
         "body" : "empty"
       },
       "response" : {
-        "body" : "empty"
-      }
-    },
-    "words.words.addGameLevel" : {
-      "path" : "addGameLevel",
-      "httpMethod" : "POST",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
-      "rosyMethod" : "com.writeright.mytest.Words.addGameLevel",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "words.words.addWord" : {
@@ -239,6 +252,36 @@
       "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
       "rosyMethod" : "com.writeright.mytest.Words.addWord",
       "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    },
+    "words.words.addGameTaskInstance" : {
+      "path" : "addGameTaskInstance/{gameInstanceId}/{wordInLevelId}/{duration}",
+      "httpMethod" : "POST",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.addGameTaskInstance",
+      "request" : {
+        "parameters" : {
+          "gameInstanceId" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "wordInLevelId" : {
+            "type" : "int32",
+            "required" : true
+          },
+          "duration" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
       },
@@ -274,6 +317,90 @@
   },
   "descriptor" : {
     "schemas" : {
+      "GameInstance" : {
+        "id" : "GameInstance",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "student" : {
+            "$ref" : "Student"
+          },
+          "gameTaskInstances" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "GameTaskInstance"
+            }
+          }
+        }
+      },
+      "Student" : {
+        "id" : "Student",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GameTaskInstance" : {
+        "id" : "GameTaskInstance",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "wrongLetterSelections" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "LetterSelection"
+            }
+          },
+          "duration" : {
+            "type" : "integer"
+          },
+          "wordInLevel" : {
+            "$ref" : "WordInLevel"
+          }
+        }
+      },
+      "LetterSelection" : {
+        "id" : "LetterSelection",
+        "type" : "object",
+        "properties" : {
+          "index" : {
+            "type" : "integer"
+          },
+          "letter" : {
+            "type" : "string"
+          }
+        }
+      },
+      "WordInLevel" : {
+        "id" : "WordInLevel",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "word" : {
+            "$ref" : "Word"
+          },
+          "distractors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
       "Word" : {
         "id" : "Word",
         "type" : "object",
@@ -288,27 +415,6 @@
             "type" : "string"
           },
           "languageCode" : {
-            "type" : "string"
-          }
-        }
-      },
-      "WordCollection" : {
-        "id" : "WordCollection",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Word"
-            }
-          }
-        }
-      },
-      "GameType" : {
-        "id" : "GameType",
-        "type" : "object",
-        "properties" : {
-          "name" : {
             "type" : "string"
           }
         }
@@ -355,18 +461,12 @@
           }
         }
       },
-      "WordInLevel" : {
-        "id" : "WordInLevel",
+      "GameType" : {
+        "id" : "GameType",
         "type" : "object",
         "properties" : {
-          "word" : {
-            "$ref" : "Word"
-          },
-          "distractors" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
+          "name" : {
+            "type" : "string"
           }
         }
       },
@@ -378,6 +478,18 @@
             "type" : "array",
             "items" : {
               "$ref" : "GameLevel"
+            }
+          }
+        }
+      },
+      "WordInLevelCollection" : {
+        "id" : "WordInLevelCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "WordInLevel"
             }
           }
         }
@@ -397,52 +509,23 @@
           }
         }
       },
-      "LanguageCollection" : {
-        "id" : "LanguageCollection",
+      "LetterSelectionList" : {
+        "id" : "LetterSelectionList",
         "type" : "object",
         "properties" : {
-          "items" : {
+          "letterSelections" : {
             "type" : "array",
             "items" : {
-              "$ref" : "Language"
-            }
-          }
-        }
-      },
-      "WordInLevelCollection" : {
-        "id" : "WordInLevelCollection",
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "WordInLevel"
-            }
-          }
-        }
-      },
-      "MyStringList" : {
-        "id" : "MyStringList",
-        "type" : "object",
-        "properties" : {
-          "value" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+              "$ref" : "LetterSelection"
             }
           }
         }
       }
     },
     "methods" : {
-      "com.writeright.mytest.Words.getWordsByLanguage" : {
+      "com.writeright.mytest.Words.getGameInstance" : {
         "response" : {
-          "$ref" : "WordCollection"
-        }
-      },
-      "com.writeright.mytest.Words.addGameType" : {
-        "request" : {
-          "$ref" : "GameType"
+          "$ref" : "GameInstance"
         }
       },
       "com.writeright.mytest.Words.getDistractors" : {
@@ -450,14 +533,31 @@
           "$ref" : "StringCollection"
         }
       },
+      "com.writeright.mytest.Words.reduceDistractors" : {
+      },
+      "com.writeright.mytest.Words.addStudent" : {
+        "request" : {
+          "$ref" : "Student"
+        }
+      },
+      "com.writeright.mytest.Words.addGameLevel" : {
+        "request" : {
+          "$ref" : "GameLevel"
+        }
+      },
+      "com.writeright.mytest.Words.newGameInstance" : {
+        "response" : {
+          "$ref" : "GameInstance"
+        }
+      },
+      "com.writeright.mytest.Words.addGameType" : {
+        "request" : {
+          "$ref" : "GameType"
+        }
+      },
       "com.writeright.mytest.Words.getGameLevels" : {
         "response" : {
           "$ref" : "GameLevelCollection"
-        }
-      },
-      "com.writeright.mytest.Words.getAllLanguages" : {
-        "response" : {
-          "$ref" : "LanguageCollection"
         }
       },
       "com.writeright.mytest.Words.getWordsByLevel" : {
@@ -470,26 +570,19 @@
           "$ref" : "Language"
         }
       },
-      "com.writeright.mytest.Words.getAllLanguageCodes" : {
+      "com.writeright.mytest.Words.getGameTaskInstance" : {
         "response" : {
-          "$ref" : "MyStringList"
-        }
-      },
-      "com.writeright.mytest.Words.getAllWords" : {
-        "response" : {
-          "$ref" : "WordCollection"
-        }
-      },
-      "com.writeright.mytest.Words.reduceDistractors" : {
-      },
-      "com.writeright.mytest.Words.addGameLevel" : {
-        "request" : {
-          "$ref" : "GameLevel"
+          "$ref" : "GameTaskInstance"
         }
       },
       "com.writeright.mytest.Words.addWord" : {
         "request" : {
           "$ref" : "Word"
+        }
+      },
+      "com.writeright.mytest.Words.addGameTaskInstance" : {
+        "request" : {
+          "$ref" : "LetterSelectionList"
         }
       },
       "com.writeright.mytest.Words.addDistractor" : {

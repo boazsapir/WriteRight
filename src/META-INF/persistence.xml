@@ -12,6 +12,9 @@
  	    <class>com.writeright.mytest.GameLevel</class>
  	    <class>com.writeright.mytest.WordInLevel</class>
  	    <class>com.writeright.mytest.GameType</class>
+ 	    <class>com.writeright.mytest.GameInstance</class>
+	    <class>com.writeright.mytest.GameTaskInstance</class>
+ 	    <class>com.writeright.mytest.Student</class> 	    
             <properties>
   
       <property name="javax.persistence.jdbc.user" value="root" />

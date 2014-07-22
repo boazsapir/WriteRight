@@ -1,6 +1,7 @@
 package com.writeright.mytest;
 
 import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +48,51 @@ public class Words {
 	        "Demo", properties);
 
 	}
+	  public void addStudent(Student student) {
+		  	EntityManager em = emf.createEntityManager();
+		    em.getTransaction().begin();
+		    em.persist(new Student(student));
+		    em.getTransaction().commit();
+		    em.close();
+	  }	  
+	  public GameInstance newGameInstance (@Named("studentId")int studentId){
+		  	EntityManager em = emf.createEntityManager();
+		    em.getTransaction().begin();
+		    Student studentObject = em.find(Student.class, studentId);
+
+		    GameInstance gameInstance = new GameInstance();
+		    gameInstance.setStudent(studentObject);
+		    em.persist(gameInstance);
+		    em.getTransaction().commit();
+		    em.close();	
+		    return gameInstance;
+		    
+	  }
+	  public void addGameTaskInstance(@Named("gameInstanceId")int gameInstanceId,
+			  LetterSelectionList wrongLetterSelections, @Named("wordInLevelId")int wordInLevelId,
+			  @Named("duration")int duration){
+
+		  EntityManager em = emf.createEntityManager();
+		  em.getTransaction().begin();
+		  GameInstance gameInstance = em.find(GameInstance.class, gameInstanceId);
+		  if(gameInstance != null){
+			  WordInLevel wordInLevel = em.find(WordInLevel.class, wordInLevelId);
+			  GameTaskInstance gameTaskInstance = new GameTaskInstance(gameInstance);
+			  gameTaskInstance.setDuration(duration);
+			  if (wrongLetterSelections.getLetterSelections().size() > 0){
+				  gameTaskInstance.setWrongLetterSelections(wrongLetterSelections.getLetterSelections());
+			  }
+			  if (wordInLevel != null){
+				  gameTaskInstance.setWordInLevel(wordInLevel);
+			  }
+			  em.persist(gameTaskInstance);
+			  em.getTransaction().commit();		    	
+		  }
+
+		  em.close();	
+
+
+	  }
 	  public void addLanguage(Language language) {
 		  	EntityManager em = emf.createEntityManager();
 		    em.getTransaction().begin();
@@ -78,7 +124,7 @@ public class Words {
 		    em.getTransaction().commit();
 		    em.close();
 	  }
-	  
+/*	  
 	  public List<Word> getAllWords() {
 		  EntityManager em = emf.createEntityManager();
 
@@ -91,7 +137,8 @@ public class Words {
 		    em.close();
 		    return result;
 	  }
-
+*/
+/*
 	  public MyStringList getAllLanguageCodes() {
 		  EntityManager em = emf.createEntityManager();
 
@@ -103,6 +150,7 @@ public class Words {
 		    em.close();
 		    return retval;
 	  }
+*/
 /*
 	  @ApiMethod(name = "getAllLanguageCodesTest", path = "get_all_language_test")
 	  public MyStringList getAllLanguageCodesTest() {
@@ -120,7 +168,8 @@ log.info("before query");
 		    em.close();
 		    return retval;
 	  }
-	  */
+*/
+/*
 	  public List<Language> getAllLanguages() {
 		  EntityManager em = emf.createEntityManager();
 
@@ -132,7 +181,7 @@ log.info("before query");
 		    em.close();
 		    return result;
 	  }	
-	  
+*/
 	  public void addDistractor(@Named("id")int id, @Named("distractor")String distractor){
 		  String decodedDistractor = null;
 		  try {
@@ -182,7 +231,27 @@ log.info("before query");
 		    return wordInLevel.distractors;
 
 	  }
+	  public GameTaskInstance getGameTaskInstance(@Named("gameTaskInstanceId")int id){
+		  	EntityManager em = emf.createEntityManager();
 
+		    GameTaskInstance gameTaskInstance = em.find(GameTaskInstance.class, id);
+		    em.close();
+		    return gameTaskInstance;
+		    
+
+	  }
+
+	  public GameInstance getGameInstance(@Named("gameInstanceId")int id){
+		  	EntityManager em = emf.createEntityManager();
+
+		    GameInstance gameInstance = em.find(GameInstance.class, id);
+		    em.refresh(gameInstance);
+		    em.close();
+		    return gameInstance;
+		    
+
+	  }	  
+	  /*
 	  @ApiMethod(name = "getWordsByLanguage", path = "get_words_by_language")
 	  public List<Word> getWordsByLanguage(@Named("languageCode")String languageCode) {
 		  EntityManager em = emf.createEntityManager();
@@ -200,6 +269,7 @@ log.info("before query");
 
 
 	  }
+*/	  
 	  @ApiMethod(name = "getGameLevels", path = "get_game_levels")
 	  public List<GameLevel> getGameLevels(@Named("gameTypeId")int id) {
 
