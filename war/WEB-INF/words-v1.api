@@ -313,6 +313,27 @@
       "response" : {
         "body" : "empty"
       }
+    },
+    "words.getGameLevels1" : {
+      "path" : "get_game_levels1",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.getGameLevels1",
+      "request" : {
+        "parameters" : {
+          "gameTypeId" : {
+            "type" : "int32",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
@@ -452,12 +473,6 @@
           },
           "gameTypeName" : {
             "type" : "string"
-          },
-          "words" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Word"
-            }
           }
         }
       },
@@ -586,6 +601,11 @@
         }
       },
       "com.writeright.mytest.Words.addDistractor" : {
+      },
+      "com.writeright.mytest.Words.getGameLevels1" : {
+        "response" : {
+          "$ref" : "GameLevelCollection"
+        }
       }
     }
   }

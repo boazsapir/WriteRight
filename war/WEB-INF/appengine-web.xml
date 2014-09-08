@@ -18,7 +18,7 @@
 		<property name="cloudsql.url"
              value="jdbc:google:mysql://fast-gate-545:test1/words"/>
        <property name="appgapiroot.url" value="https://1-dot-fast-gate-545.appspot.com"/>      
-       <property name="appgapiroot.url.dev" value="http://192.168.1.12:8888"/>      
+       <property name="appgapiroot.url.dev" value="http://localhost:8888"/>      
     </system-properties>
 
   <!--

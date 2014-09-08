@@ -69,7 +69,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 	$scope.feedbackMessageCssVar = "feedbackMessage";
 	$scope.solvedWord = "";
 	$scope.setFeedbackVisibility(false);
-	$scope.duckImage = 'duck';
+	$scope.duckImage = 'appMonkey';
 	$scope.springImage = 'spring1';
 	$scope.trampolineImage = 'trampoline1';
 	$scope.showFirstWord= function(){
@@ -86,7 +86,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 		$scope.springCssVar='jumpSpring';
 		$scope.scoreCssVar = 'scoreChange';
 		$scope.scoreContainerCssVar = 'scoreContainerBig';
-		$scope.duckImage = 'duckHappy';
+		$scope.duckImage = 'appMonkeyHappy';
 		$scope.playWordAudio(false, SoundFileNames.CORRECT_WORD);
 		$scope.messageToPlayer = "";
 		$scope.solvedWord = $scope.currentWord;
@@ -132,11 +132,34 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 			if (!$scope.selectNextWord()){
 
 				if ($scope.currentLevel < $scope.gameLevels.length){
-					
+
+					var displayStartButton = false; 
+					var requestData = {};
+					requestData.gameTypeId = 1;	
+					requestData.levelIndex = $scope.currentLevel+1;
+					gapi.client.words.getWordsByLevel(requestData).execute(function(resp) {
+						$scope.gameLevels[$scope.currentLevel].wordsInLevel = resp.items;
+						if (displayStartButton){
+							$scope.startButtonVisible = true;							
+							$scope.$apply();		 				
+						}
+						else{
+							// will be displayed after timeout function bellow returns
+							displayStartButton = true;
+						}
+					});
 					$scope.scoreCssVar = "";
 					$scope.scoreContainerCssVar = "";
 					$scope.playAudioFile(SoundFileNames.FINISHED_LEVEL);
-					$timeout(function(){$scope.startButtonVisible=true;}, 5000);
+					$timeout(function(){
+						if (displayStartButton){
+							$scope.startButtonVisible = true;
+						}
+						else{
+							// will be displayed when next level data returns from server
+							displayStartButton = true;
+						}
+					}, 5000);
 				}
 				else{
 					$scope.feedbackMessageCssVar = "endOfGameMessage";
@@ -460,9 +483,8 @@ myApp.controller('Main', function($window, $scope, $http) {
 //			$scope.currentLanguage = 'EN';
 //			$scope.getLanguages();
 //			$scope.updateWordsForLanguage();
+//			$window.alert("getting data");
 			$scope.getGameLevels();	
-
-
 
 
 		}, 
@@ -499,7 +521,8 @@ myApp.controller('Main', function($window, $scope, $http) {
 	$scope.getGameLevels = function() {
 		var requestData = {};
 		requestData.gameTypeId = 1;	
-		gapi.client.words.getGameLevels(requestData).execute(function(resp) {
+		// this function omits the word lists except for the first level
+		gapi.client.words.getGameLevels1(requestData).execute(function(resp) {
 			$scope.gameLevels = resp.items;
 			//$scope.updateWordsForLevel();	
 			var firstWordSoundFile = "audio/" + $scope.gameLevels[0].wordsInLevel[0].word.imageFileName.replace(".png", ".mp3");

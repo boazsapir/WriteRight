@@ -11,8 +11,8 @@
 	<link rel="stylesheet" href="./bower_components/ngDialog/css/ngDialog-theme-default.css">
 	<link rel="stylesheet" href="./bower_components/ngDialog/css/ngDialog-theme-plain.css">
  	<script type='text/javascript'>
+ 	//window.alert('000');
  	  		function startApp() {
-
 
 			if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
 						.test(navigator.userAgent)) {
@@ -91,12 +91,12 @@ Please send your feedback by email to <b>tuval@appy2write.com</b>
 <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
 <script src="./jquery.ui.touch-punch.js"></script>
- <script src="./bower_components/angular/angular.js"></script>
- <script src="./bower_components/angular-route/angular-route.js"></script>
- <script src="./bower_components/angular-animate/angular-animate.js"></script>
-   <script src="./bower_components/angular-touch/angular-touch.js"></script>
+ <script src="./bower_components/angular/angular.min.js"></script>
+ <script src="./bower_components/angular-route/angular-route.min.js"></script>
+ <script src="./bower_components/angular-animate/angular-animate.min.js"></script>
+   <script src="./bower_components/angular-touch/angular-touch.min.js"></script>
  
-    <script src="./bower_components/ngDialog/js/ngDialog.js"></script>
+    <script src="./bower_components/ngDialog/js/ngDialog.min.js"></script>
    <script src="./js/app.js"></script>
   <script src="./js/services.js"></script>
   <script src="./js/controllers.js"></script>

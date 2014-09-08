@@ -83,6 +83,7 @@ public class GameLevel {
 		this.gameType = gameType;
 	}
 	
+	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
 	public List<Word> getWords(){
 		List<Word> retVal = new ArrayList<Word>();
 		for(int i=0; i<wordsInLevel.size();i++){

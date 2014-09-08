@@ -87,7 +87,7 @@ myApp.animation('.jumpDuck',function(){
 
 			var tl = new TimelineLite({paused:true,
 				onComplete:function(){
-									  angular.element(element).scope().duckImage = 'duck';
+									  angular.element(element).scope().duckImage = 'appMonkey';
 										}});
 			tl.to(element, 1, {bottom: "320px"})
 			.to(element, 1, {bottom: "118px", ease:Bounce.easeOut});

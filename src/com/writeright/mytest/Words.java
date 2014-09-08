@@ -285,7 +285,39 @@ log.info("before query");
 //			  for (int i=0; i<gameLevels.size();i++){
 //				  levels.add(gameLevels.get(i).getLevelIndex());
 //			  }
+			  //retVal = new ArrayList<GameLevel>();
+			  //retVal.add(0, gameLevels.get(0));
 			  retVal = gameLevels;
+		  }
+	
+		  em.close();
+		  return retVal;
+	  }
+	  // for performance optimization: this version omit the word lists of all levels except the first
+	  // word lists can fetched when necessary by calling getWordsByLevel
+	  @ApiMethod(name = "getGameLevels1", path = "get_game_levels1")
+	  public List<GameLevel> getGameLevels1(@Named("gameTypeId")int id) {
+
+		  EntityManager em = emf.createEntityManager();
+//		  Query query = em.createQuery("SELECT w FROM Word w Where w.language=:arg1");
+//		  query.setParameter("arg1", language);	
+//		  List<Word> result = query.getResultList();
+		  GameType gameType = em.find(GameType.class, id);
+		  List<GameLevel> retVal = null;
+		  if (gameType != null){
+			  List<GameLevel> gameLevels =  gameType.getGameLevels();
+//			  List<Integer> levels = new ArrayList<Integer>();
+//			  for (int i=0; i<gameLevels.size();i++){
+//				  levels.add(gameLevels.get(i).getLevelIndex());
+//			  }
+			  retVal = new ArrayList<GameLevel>();
+			  retVal.add(0, gameLevels.get(0));
+			  for (int i=1; i<gameLevels.size();i++){
+				  GameLevel gameLevel = gameLevels.get(i);
+				  gameLevel.getWordsInLevel().clear();
+				  retVal.add(gameLevel);
+			  }
+			  //retVal = gameLevels;
 		  }
 	
 		  em.close();
