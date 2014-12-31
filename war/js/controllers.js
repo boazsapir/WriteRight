@@ -24,22 +24,55 @@ myApp.controller('MyCtrl2', function($scope) {
 
 
 	  });
-myApp.controller('MyCtrl1', function($scope) {
+myApp.controller('MyCtrl1', function($window, $scope, $q, wordHandler) {
 
+	$scope.backendReadyPromise.then(function(){
+//		$window.alert($scope.is_words_backend_ready);
+		var requestData = {};
+//		gapi.client.words.getAllGameTaskInstances(requestData).execute(function(resp){
+//			$scope.tableRows = resp.items;
+//			$scope.$apply();
+//		});
+		gapi.client.request({
+			'path': gapiRoot + '/_ah/api/words/v1/get_all_game_task_instances',
+			'params' : {}
+		}).execute(function(resp){
+			$scope.tableRows = resp.items;
+			$scope.$apply();			
+		});
+	}, function(reason) {
+		alert('Failed: ' + reason);
+		return reason;
+	}, function(update) {
+		alert('Got notification: ' + update);
+	});
 	
 	
 	  $scope.getLetters = function(word){
         return word.split("");
         
 	  };
+	  
+	  $scope.letterSeparator = wordHandler.letterSeparator; 
 
 
-	  $scope.selectWord = function(){
-		  
-	  };
+
+
 
 });
-myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, audioService, ngDialog) {
+myApp.controller('MyCtrl3', function($window, $scope) {	
+// Empty because we do everything in Main
+	$scope.backendReadyPromise.then(function(){
+//		$window.alert($scope.is_words_backend_ready);
+	}, function(reason) {
+		alert('Failed: ' + reason);
+		return reason;
+	}, function(update) {
+		alert('Got notification: ' + update);
+	});
+});
+
+myApp.controller('Main', function($window, $scope, $timeout, $http, $q,$translate, wordHandler, audioService, ngDialog) {
 	var SoundFileNames = {
 			CORRECT_LETTER : "CorrectLetter.mp3",
 			CORRECT_WORD: "CorrectWord.mp3",
@@ -47,7 +80,9 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 			FINISHED_GAME : "FinishedGame.mp3",
 			INCORRECT_LETTER: "IncorrectLetter.mp3"
 	};
-	
+	var deferred = $q.defer();
+	$scope.backendReadyPromise = deferred.promise; 
+		
 	$scope.openFeedbackDialog = function(){
 			ngDialog.open({ template: 'firstDialogId',  className: 'ngdialog-theme-default', scope: $scope });
 	};
@@ -55,6 +90,12 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 	$scope.setFeedbackVisibility = function(isVisible){
 		$scope.feedbackVisible = isVisible;
 	};
+	$scope.separatedWordSuff = "_sep";
+
+	$scope.apiLoaded = false;
+	$scope.userFirstName = null;
+	$scope.is_words_backend_ready = false;
+	$scope.loggedIn = false;
 	$scope.startButtonVisible=true;
 	$scope.currentLevel = 0;
 	$scope.firstWord = true;
@@ -72,6 +113,18 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 	$scope.duckImage = 'appMonkey';
 	$scope.springImage = 'spring1';
 	$scope.trampolineImage = 'trampoline1';
+	$scope.firstSoundAvailable = false;
+	try{
+		$scope.audioContext = new AudioContext();		  
+	}
+	catch(err){
+		try{
+			$scope.audioContext = new webkitAudioContext();
+		}
+		catch(err){
+			$scope.audioContext = null;
+		};
+	}
 	$scope.showFirstWord= function(){
 		$scope.wordSolved = false;
 		$scope.duckCssVar = "";
@@ -106,10 +159,29 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 
 		$scope.gameInstanceIdPromise = $scope.gameInstanceIdPromise.then(function(gameInstanceId) {
 
-			requestData.gameInstanceId = gameInstanceId;	
-			gapi.client.words.words.addGameTaskInstance(requestData).execute(function() {
-				//window.alert("");
-			});
+			requestData.gameInstanceId = gameInstanceId;
+	
+//			gapi.client.request({
+//				'path': gapiRoot + '/_ah/api/words/v1/addGameTaskInstance' +
+//				 '/' + requestData.gameInstanceId + '/' + requestData.wordInLevelId + '/' + requestData.duration,
+//				'params' : {'letterSelections' : $scope.wrongLetterSelections},
+//				'method' : 'POST'			
+//			}).execute(function(resp, rawresp){
+			if(isProduction){
+				gapi.client.words.words.addGameTaskInstance(requestData).execute(function(resp, rawresp) {
+	//				window.alert("");
+				});
+			}
+			else{
+				gapi.client.request({
+				'path': gapiRoot + '/_ah/api/words/v1/addGameTaskInstance' +
+				 '/' + requestData.gameInstanceId + '/' + requestData.wordInLevelId + '/' + requestData.duration,
+				'params' : {},
+				'method' : 'POST'			
+				}).execute(function(resp, rawresp){
+				
+				});
+			}
 
 			return gameInstanceId;
 		}, function(reason) {
@@ -134,10 +206,14 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 				if ($scope.currentLevel < $scope.gameLevels.length){
 
 					var displayStartButton = false; 
-					var requestData = {};
-					requestData.gameTypeId = 1;	
-					requestData.levelIndex = $scope.currentLevel+1;
-					gapi.client.words.getWordsByLevel(requestData).execute(function(resp) {
+					//var requestData = {};
+					//requestData.gameTypeId = gameTypeId;	
+					//requestData.levelIndex = $scope.currentLevel+1;
+					gapi.client.request({
+						'path': gapiRoot + '/_ah/api/words/v1/get_words_for_level',
+						'params' : {'gameTypeId' : gameTypeId, 'levelIndex' : $scope.currentLevel+1 }
+					}).execute(function(resp){
+					//gapi.client.words.getWordsByLevel(requestData).execute(function(resp) {
 						$scope.gameLevels[$scope.currentLevel].wordsInLevel = resp.items;
 						if (displayStartButton){
 							$scope.startButtonVisible = true;							
@@ -164,7 +240,9 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 				else{
 					$scope.feedbackMessageCssVar = "endOfGameMessage";
 					$scope.setFeedbackVisibility(true);
-					$scope.messageToPlayer = "Game Ended!";
+					$translate("END_OF_GAME").then(function (translation) {
+						$scope.messageToPlayer = translation;
+					});
 					$scope.playAudioFile(SoundFileNames.FINISHED_GAME);
 				}
 			}
@@ -176,21 +254,21 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 				$scope.springCssVar="";
 				$scope.scoreCssVar = "";
 				$scope.scoreContainerCssVar = "";
-				$scope.playWordAudio(false);
+				$scope.playWordAudio(false, null, $scope.separatedWordSuff);
 			}
 		}, 6000);		
 	};
 	$scope.letterSelected = function(letter, dropTragetLetterIndex){
 		$scope.messageToPlayer = "";
 		$scope.selectedLetter = letter;
-		// patch for Safari bug with Shadda (for some reason the Shadda and other discritic change their order
+		// patch for Safari bug with Shadda (for some reason the Shadda and other diacritic change their order
 		if (letter.length == 3 && letter[2] == "ّ"){
 			var newLetter = letter[0] + letter[2] + letter[1];
 			letter = newLetter;
 		}		
 		if ($scope.extractedLetterIndex == 0){
 			if (dropTragetLetterIndex != null){
-				var letters = wordHandler.letterSeparator($scope.currentWord);
+				var letters = wordHandler.letterSeparator($scope.currentWord, $scope.language);
 	//			window.alert(letters[dropTragetLetterIndex] + " " +letters[dropTragetLetterIndex].length + " " + letter + " " + letter.length);
 	//			for (var i=0; i<letter.length; i++){
 	//				if (letters[dropTragetLetterIndex][i] != letter[i]){
@@ -230,13 +308,15 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 				else{
 					ga('send', 'event', 'dragWrongLetter', 'L'+$scope.currentLevel +' ' +$scope.currentWord +'-' + dropTragetLetterIndex, letter);									
 					$scope.wrongLetterSelections.push({index: dropTragetLetterIndex+1, letter: letter});
-					$scope.messageToPlayer = " Try Again :(";
+					$translate("TRY_AGAIN").then(function (translation) {
+						$scope.messageToPlayer = translation + " :(";
+					});
 					$scope.distractorCssVar="wrongLetterSelection";
 					$scope.mistakesCounter++;
 //					window.alert("Wrong :(");
 					$scope.$apply($scope.setFeedbackVisibility(false));
 					$scope.distractorCssVar="";
-					$scope.playWordAudio(false, SoundFileNames.INCORRECT_LETTER);
+					$scope.playWordAudio(false, SoundFileNames.INCORRECT_LETTER, $scope.separatedWordSuff);
 					$timeout(function(){
 						$scope.setFeedbackVisibility(true);
 					    }, 0);
@@ -256,13 +336,16 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 		else{
 			ga('send', 'event', 'dragWrongLetter', 'L'+$scope.currentLevel +' ' +$scope.currentWord, letter);
 			$scope.wrongLetterSelections.push({index: $scope.extractedLetterIndex, letter: letter});
-			$scope.messageToPlayer =  " Try Again :(";
+//			$scope.messageToPlayer =  " Try Again :(";
+			$translate("TRY_AGAIN").then(function (translation) {
+				$scope.messageToPlayer = translation + " :(";
+			});
 			$scope.distractorCssVar="wrongLetterSelection";
 			$scope.mistakesCounter++;
 //			window.alert("Wrong :(");
 			$scope.$apply($scope.setFeedbackVisibility(false));
 			$scope.distractorCssVar="";
-			$scope.playWordAudio(false, SoundFileNames.INCORRECT_LETTER);
+			$scope.playWordAudio(false, SoundFileNames.INCORRECT_LETTER, $scope.separatedWordSuff);
 			$timeout(function(){
 				$scope.setFeedbackVisibility(true);
 			    }, 0);
@@ -281,7 +364,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 //				  $scope.extractedLetterIndex = $scope.currentWord.length;
 //			  }
 			  $scope.wrongLetterSelections = [];
-			  var letters = wordHandler.letterSeparator($scope.currentWord);
+			  var letters = wordHandler.letterSeparator($scope.currentWord, $scope.language);
 //			  $scope.extractedLetter = $scope.currentWord.charAt($scope.extractedLetterIndex-1);
 			  if ($scope.extractedLetterIndex == 0){
 				  $scope.solvedLetters = [];
@@ -324,10 +407,14 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 	  };
 	  
 	  $scope.startGame = function(){
-			var requestData = {};
-			requestData.studentId = 1;	
+	
 			var deferred = $q.defer();
-			gapi.client.words.words.newGameInstance(requestData).execute(function(resp) {
+			gapi.client.request({
+				'path': gapiRoot + '/_ah/api/words/v1/newGameInstance' +
+				'/' + $scope.userId,
+				'method': 'POST'
+			}).execute(function(resp){
+//			gapi.client.words.words.newGameInstance(requestData).execute(function(resp) {
 				//window.alert(resp.id);
 				deferred.resolve(resp.id);
 			});
@@ -394,7 +481,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 			  audioService.playFromBuffer($scope.audioContext, $scope.firstWordSoundBuffer);
 		  }
 		  else{
-			  $scope.playWordAudio(false);
+			  $scope.playWordAudio(false, null, $scope.separatedWordSuff);
 		  }
 //		  gapi.client.words.getWordsByLevel(requestData).execute(function(resp) {
 //		  $scope.wordsInLevel = resp.items;
@@ -415,7 +502,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 			  $scope.currentDistractors.splice(randomIndex, 0, $scope.extractedLetter);	
 		  }
 		  else{
-			  var letters =wordHandler.letterSeparator($scope.currentWord);
+			  var letters =wordHandler.letterSeparator($scope.currentWord, $scope.language);
 			  for (var i=0;i<letters.length;i++){
 				  var randomIndex = Math.floor((Math.random()*($scope.currentDistractors.length+1)));
 				  $scope.currentDistractors.splice(randomIndex, 0, letters[i]);	
@@ -432,7 +519,7 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 		  var filePath = 'audio/' + fileName;
 		  audioService.concatWords($scope.audioContext, filePath, null);	  };
 	  
-	  $scope.playWordAudio = function(withNext, precedingSound){
+	  $scope.playWordAudio = function(withNext, precedingSound, wordNameSuffix){
 		  
 		  // function does not support combination of withNext == true AND precedingSound != NULL (concat only two sounds not three)
 		  
@@ -445,10 +532,18 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 		  //		section.appendChild( $scope.frame ); 
 
 		  if (withNext && $scope.nextWordIndex < $scope.wordsInLevel.length ){
-			  var word1 = 'audio/' + $scope.wordImage.replace(".png", ".mp3");
-			  word1 = word1.replace(".jpg", ".mp3");
-			  var word2 =	'audio/' +$scope.wordsInLevel[$scope.nextWordIndex].word.imageFileName.replace(".png", ".mp3");
-			  word2 = word2.replace(".jpg", ".mp3");
+// This case currently not used, not tested
+			  var imageFileSuffix = $scope.wordImage.slice($scope.wordImage.indexOf("."));
+			  var word1 = 'audio/' + [$scope.wordImage.slice(0,(-1)*imageFileSuffix.length),
+			                          "_", $scope.language, ".mp3"].join('');
+			   
+			  //var word1 = 'audio/' + $scope.wordImage.replace(".png", ".mp3");
+			  //word1 = word1.replace(".jpg", ".mp3");
+			  imageFileSuffix = $scope.wordsInLevel[$scope.nextWordIndex].word.imageFileName.slice($scope.wordsInLevel[$scope.nextWordIndex].word.imageFileName.indexOf("."));
+		//	  var word2 =	'audio/' +$scope.wordsInLevel[$scope.nextWordIndex].word.imageFileName.replace(".png", ".mp3");
+		//	  word2 = word2.replace(".jpg", ".mp3");
+			  var word2 = 'audio/' + [$scope.wordsInLevel[$scope.nextWordIndex].word.imageFileName.slice(0,(-1)*imageFileSuffix.length),
+			                          "_", $scope.language, ".mp3"].join('');
 			  audioService.concatWords($scope.audioContext, word1, word2);
 		  }
 		  else{
@@ -456,8 +551,13 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 //			  audio.src ='audio/' + $scope.wordImage.replace(".jpg", ".mp3");
 //			  audio.volume = 1;
 //			  audio.play();	
-			  word1 ='audio/' + $scope.wordImage.replace(".png", ".mp3");
-			  word1 = word1.replace(".jpg", ".mp3");
+			  var imageFileSuffix = $scope.wordImage.slice($scope.wordImage.indexOf("."));
+			  if (wordNameSuffix == 'undefined' || wordNameSuffix == null) wordNameSuffix = "";
+			  var word1 = 'audio/' + [$scope.wordImage.slice(0,(-1)*imageFileSuffix.length),
+			                          wordNameSuffix, "_", $scope.language, ".mp3"].join('');
+
+//			  word1 ='audio/' + $scope.wordImage.replace(".png", ".mp3");
+//			  word1 = word1.replace(".jpg", ".mp3");
 			  if(typeof precedingSound != 'undefined' && precedingSound != null){
 				  var precedingSoundFilePath = 'audio/' + precedingSound;
 				  audioService.concatWords($scope.audioContext, precedingSoundFilePath, word1);				  
@@ -468,12 +568,21 @@ myApp.controller('MyCtrl3', function($scope, $timeout, $http, $q, wordHandler, a
 		  }
 
 	  };
+	  
+	  $scope.userLogin = function(){
+		  audioService.playFromBuffer($scope.audioContext, $scope.firstSoundBuffer);
+		  $scope.userNameSubmitted=true;
+		  $scope.loginFeedback = "";
+		  if ($scope.apiLoaded){
+			  $scope.getUserId();
+		  }
 
+	  };
 
-});
-myApp.controller('Main', function($window, $scope, $http) {
 
 	$window.init= function() {
+		//$window.alert('111');
+		$scope.$apply($scope.getFirstSound);
 		$scope.$apply($scope.load_words_lib);
 	};
 	$scope.load_words_lib = function() {
@@ -483,15 +592,49 @@ myApp.controller('Main', function($window, $scope, $http) {
 //			$scope.currentLanguage = 'EN';
 //			$scope.getLanguages();
 //			$scope.updateWordsForLanguage();
-//			$window.alert("getting data");
-			$scope.getGameLevels();	
-
+			//$window.alert("getting data");
+			$scope.apiLoaded = true;
+			$scope.getGameLevels();
+			if($scope.userNameSubmitted){
+				$scope.getUserId();
+			}
+			
 
 		}, 
 		gapiRoot + '/_ah/api');
 
 	};
-/*
+	
+	$scope.getFirstSound = function(){
+		var firstSoundFile = 'audio/' + 'click.mp3';
+
+		$http.get(firstSoundFile,  {responseType: "arraybuffer"}).success(function(data) {		
+			$scope.audioContext.decodeAudioData(data, function(buf1) {
+				$scope.firstSoundBuffer = buf1;  
+				$scope.firstSoundAvailable = true;
+				$scope.$apply();
+			});
+		});
+	};
+
+	$scope.getUserId = function(){
+		gapi.client.request({
+			'path': gapiRoot + '/_ah/api/words/v1/get_student_by_name/' +  $scope.userFirstName
+		}).then(function(resp){
+			$scope.userId = resp.result.id;
+			$scope.loggedIn=true;
+			if($scope.is_words_backend_ready){
+				$scope.startGame();
+			}
+			$scope.$apply();
+		},function(reason){
+			$scope.userNameSubmitted=false;
+			//window.alert(reason.result.error.message);
+			$scope.loginFeedback = reason.result.error.message;
+			$scope.$apply();
+		});
+	};
+	/*
 	$scope.list = function() {
 		gapi.client.guestbook.guestbook.getAllEntries().execute(function(resp) {
 			$scope.entries = resp.items;
@@ -520,29 +663,37 @@ myApp.controller('Main', function($window, $scope, $http) {
 */
 	$scope.getGameLevels = function() {
 		var requestData = {};
-		requestData.gameTypeId = 1;	
+		requestData.gameTypeId = gameTypeId;	
+
 		// this function omits the word lists except for the first level
-		gapi.client.words.getGameLevels1(requestData).execute(function(resp) {
+			gapi.client.request({
+				'path': gapiRoot + '/_ah/api/words/v1/get_game_levels1',
+				'params' : {'gameTypeId' : requestData.gameTypeId}
+			}).execute(function(resp){
+			//gapi.client.words.getGameLevels1(requestData).execute(function(resp) {
 			$scope.gameLevels = resp.items;
 			//$scope.updateWordsForLevel();	
-			var firstWordSoundFile = "audio/" + $scope.gameLevels[0].wordsInLevel[0].word.imageFileName.replace(".png", ".mp3");
+			$scope.language = $scope.gameLevels[0].gameType.language.languageCode;
+			$translate.use($scope.language);
+			
+
+			var firstWordImageFile = $scope.gameLevels[0].wordsInLevel[0].word.imageFileName;
+			var imageFileSuffix = firstWordImageFile.slice(firstWordImageFile.indexOf("."));
+
+			//var firstWordSoundFile = "audio/" + firstWordImageFile.replace(".png", ".mp3");
+			var firstWordSoundFile = 'audio/' + [firstWordImageFile.slice(0,(-1)*imageFileSuffix.length),
+			                          $scope.separatedWordSuff, "_", $scope.language, ".mp3"].join('');
 
 			$http.get(firstWordSoundFile,  {responseType: "arraybuffer"}).success(function(data) {
 //				var context = null;
-				try{
-					$scope.audioContext = new AudioContext();		  
-				}
-				catch(err){
-					try{
-						$scope.audioContext = new webkitAudioContext();
-					}
-					catch(err){
 
-					};
-				}
 				$scope.audioContext.decodeAudioData(data, function(buf1) {
 					$scope.firstWordSoundBuffer = buf1;  
 					$scope.is_words_backend_ready = true;
+					deferred.resolve();
+					if($scope.loggedIn){
+						$scope.startGame();
+					}
 					$scope.$apply();
 				});
 			});

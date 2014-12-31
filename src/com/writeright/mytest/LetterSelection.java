@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 public class LetterSelection implements Serializable{
 
+	/**
+	 * 
+	 */
 	public LetterSelection() {
 		// TODO Auto-generated constructor stub
 	}

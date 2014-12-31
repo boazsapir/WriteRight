@@ -8,10 +8,10 @@ filter('interpolate', ['version', function(version) {
     return String(text).replace(/\%VERSION\%/mg, version);
   };
 }]).filter('displayWordForGame', function(wordHandler){
-	return function(word, letterToExclude, solvedLetters) {
+	return function(word, letterToExclude, solvedLetters, language) {
 		var retVal = new Array();
 		if (typeof word != 'undefined'){
-			var letters = wordHandler.letterSeparator(word);
+			var letters = wordHandler.letterSeparator(word, language);
 
 			for (var i = 0; i < letters.length; i++) {
 				if (letterToExclude == 0){
@@ -19,7 +19,7 @@ filter('interpolate', ['version', function(version) {
 						retVal[i] = letters[i];						
 					}
 					else{
-						retVal[i] = wordHandler.placeHolderChar('ar');
+						retVal[i] = wordHandler.placeHolderChar(language);
 					}
 				}
 				else if (!(i == letterToExclude-1 || (letterToExclude == -1 && i==letters.length-1))){
@@ -27,7 +27,7 @@ filter('interpolate', ['version', function(version) {
 
 				}
 				else{
-					retVal[i] = wordHandler.placeHolderChar('ar');
+					retVal[i] = wordHandler.placeHolderChar(language);
 				}
 			}
 		}

@@ -2,35 +2,28 @@
 <p>This is the partial for view 1.</p>
 
 <div>
-    Game Level:<select ng-model="$parent.currentLevel" ng-options="gl for gl in gameLevels" ng-change="updateWordsForLevel()">
-    </select>
-    <br>
-	<ul>
-		<li ng-repeat="word in wordsInLevel">{{word.word.word}}<br> {{word.distractors}}
-	</ul>
-	
+  <table id=hor-zebra>
+  <thead>
+  <tr class="odd"><th>Name</th><th>Word</th><th>Duration</th><th>Wrong Selections</th></tr>
+  </thead>
+  <tbody ng-repeat="row in tableRows">
+  <tr class={{$index%2==1?"odd":""}}><td>{{row.gameInstance.student.firstName}}</td><td>{{row.wordInLevel.word.word}}</td><td>{{row.duration}}</td>
+ 
+  <td> 
+  
+  <div ng-repeat="distractor in row.wrongLetterSelections">
+ {{distractor.letter}}\{{letterSeparator(row.wordInLevel.word.word,language)[distractor.index-1]}}
+  </div>
+ 
+  </td>
+
+  </tr>
+ </tbody>
+  </table>
 	
 
 	   <a href="#/view3">Start The Game</a>
  	<br><br>
-	<select ng-model="$parent.currentLanguage" ng-options="c for c in languages" ng-change="updateWordsForLanguage()">
-    </select>
-     LANGUAGE IS {{currentLanguage}}
- <ul>
 
-
-		<ul>
-			<li ng-repeat="word in words">{{word.word}}
-		</ul>
-		<ul>
-        <li ng-repeat="word in words">
-
-            {{getLetters(word.word).length}}
-             {{ word.word}}<br><br>
-            <span ng-if="getLetters(word.word).length > 3">{{ word.word}}</span>
-
-        </li>
-    </ul>
-</ul>
 </div>
 

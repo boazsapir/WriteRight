@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.google.api.server.spi.config.AnnotationBoolean;
+import com.google.api.server.spi.config.ApiResourceProperty;
+
 
 @Entity
 @Table(name = "Language")
@@ -33,7 +36,8 @@ public class Language {
 	}
 
 
-	 public List<Word> getWords() {
+	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
+	public List<Word> getWords() {
 		return words;
 	}
 

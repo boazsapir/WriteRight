@@ -107,6 +107,21 @@
         "body" : "empty"
       }
     },
+    "words.getAllGameTaskInstances" : {
+      "path" : "get_all_game_task_instances",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.getAllGameTaskInstances",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "words.words.addGameLevel" : {
       "path" : "addGameLevel",
       "httpMethod" : "POST",
@@ -158,6 +173,31 @@
       },
       "response" : {
         "body" : "empty"
+      }
+    },
+    "words.getStudentByName" : {
+      "path" : "get_student_by_name/{firstName}",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "292824132082.apps.googleusercontent.com" ],
+      "rosyMethod" : "com.writeright.mytest.Words.getStudentByName",
+      "request" : {
+        "parameters" : {
+          "firstName" : {
+            "type" : "string",
+            "required" : true
+          },
+          "lastName" : {
+            "type" : "string",
+            "required" : false
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
       }
     },
     "words.getGameLevels" : {
@@ -347,12 +387,6 @@
           },
           "student" : {
             "$ref" : "Student"
-          },
-          "gameTaskInstances" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "GameTaskInstance"
-            }
           }
         }
       },
@@ -368,6 +402,18 @@
           },
           "lastName" : {
             "type" : "string"
+          }
+        }
+      },
+      "StringCollection" : {
+        "id" : "StringCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
           }
         }
       },
@@ -389,6 +435,9 @@
           },
           "wordInLevel" : {
             "$ref" : "WordInLevel"
+          },
+          "gameInstance" : {
+            "$ref" : "GameInstance"
           }
         }
       },
@@ -440,14 +489,14 @@
           }
         }
       },
-      "StringCollection" : {
-        "id" : "StringCollection",
+      "GameTaskInstanceCollection" : {
+        "id" : "GameTaskInstanceCollection",
         "type" : "object",
         "properties" : {
           "items" : {
             "type" : "array",
             "items" : {
-              "type" : "string"
+              "$ref" : "GameTaskInstance"
             }
           }
         }
@@ -482,6 +531,18 @@
         "properties" : {
           "name" : {
             "type" : "string"
+          },
+          "language" : {
+            "$ref" : "Language"
+          }
+        }
+      },
+      "Language" : {
+        "id" : "Language",
+        "type" : "object",
+        "properties" : {
+          "languageCode" : {
+            "type" : "string"
           }
         }
       },
@@ -505,21 +566,6 @@
             "type" : "array",
             "items" : {
               "$ref" : "WordInLevel"
-            }
-          }
-        }
-      },
-      "Language" : {
-        "id" : "Language",
-        "type" : "object",
-        "properties" : {
-          "languageCode" : {
-            "type" : "string"
-          },
-          "words" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "Word"
             }
           }
         }
@@ -555,6 +601,11 @@
           "$ref" : "Student"
         }
       },
+      "com.writeright.mytest.Words.getAllGameTaskInstances" : {
+        "response" : {
+          "$ref" : "GameTaskInstanceCollection"
+        }
+      },
       "com.writeright.mytest.Words.addGameLevel" : {
         "request" : {
           "$ref" : "GameLevel"
@@ -568,6 +619,11 @@
       "com.writeright.mytest.Words.addGameType" : {
         "request" : {
           "$ref" : "GameType"
+        }
+      },
+      "com.writeright.mytest.Words.getStudentByName" : {
+        "response" : {
+          "$ref" : "Student"
         }
       },
       "com.writeright.mytest.Words.getGameLevels" : {

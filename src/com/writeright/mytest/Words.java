@@ -1,8 +1,9 @@
 package com.writeright.mytest;
 
 import java.io.UnsupportedEncodingException;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,9 @@ import javax.inject.Named;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.DefaultValue;
+import com.google.api.server.spi.config.Nullable;
+import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.utils.SystemProperty;
 @Api(name = "words",
 version = "v1"
@@ -30,7 +34,7 @@ public class Words {
 	  EntityManager em1;
 	  static{
 	    properties = new HashMap();
-	    if (SystemProperty.environment.value() ==
+		    if (SystemProperty.environment.value() ==
 	          SystemProperty.Environment.Value.Production) {
 	      properties.put("javax.persistence.jdbc.driver",
 	          "com.mysql.jdbc.GoogleDriver");
@@ -293,8 +297,8 @@ log.info("before query");
 		  em.close();
 		  return retVal;
 	  }
-	  // for performance optimization: this version omit the word lists of all levels except the first
-	  // word lists can fetched when necessary by calling getWordsByLevel
+	  // for performance optimization: this version omits the word lists of all levels except the first
+	  // word lists can be fetched when necessary by calling getWordsByLevel
 	  @ApiMethod(name = "getGameLevels1", path = "get_game_levels1")
 	  public List<GameLevel> getGameLevels1(@Named("gameTypeId")int id) {
 
@@ -326,7 +330,7 @@ log.info("before query");
 	  @ApiMethod(name = "getWordsByLevel", path = "get_words_for_level")
 	  public List<WordInLevel> getWordsByLevel(@Named("gameTypeId")int id, @Named("levelIndex") int index) {
 
-		    List<WordInLevel> retVal = null;
+		  List<WordInLevel> retVal = null;
 		  EntityManager em = emf.createEntityManager(/*SynchronizationType.SYNCHRONIZED*/);
 		  Query query = em.createQuery("SELECT gl FROM GameLevel gl Where gl.gameType.id=:arg1 And gl.levelIndex=:arg2");
 		  query.setParameter("arg1", id);
@@ -342,6 +346,64 @@ log.info("before query");
 		  em.close();
 		  return retVal;
 	  }
-	  	  
+	  
+	  @ApiMethod(name="getStudentByName", path="get_student_by_name/{firstName}")
+	  public Student getStudentByName(@Named("firstName") String firstName, @Named("lastName") @Nullable String lastName) throws NotFoundException{
+		  Student retVal= null;
+		  EntityManager em = emf.createEntityManager(/*SynchronizationType.SYNCHRONIZED*/);
+		  Query query = null;
+		  
+		  String decodedFirstName = null;
+		  try {
+			  decodedFirstName = java.net.URLDecoder.decode(firstName, "UTF-8");
+		  } catch (UnsupportedEncodingException e) {
+			  // TODO Auto-generated catch block
+			  e.printStackTrace();
+		  }
+		  
+		  if (lastName != null){
+			  query = em.createQuery("SELECT st FROM Student st Where st.firstName=:arg1 And st.lastName=:arg2");
+			  query.setParameter("arg1", decodedFirstName);
+			  query.setParameter("arg2", lastName);
+		  }
+		  else{
+			  query = em.createQuery("SELECT st FROM Student st Where st.firstName=:arg1 And st.lastName is NULL");
+			  query.setParameter("arg1", decodedFirstName);			  
+		  }
+		  List<Student> queryResult = query.getResultList();
+		  if (queryResult != null && queryResult.size() == 1){
+			  retVal = queryResult.get(0);
+		  }
+		  else{
+			  em.close();
+			  if(queryResult == null || queryResult.size() == 0){
+				  throw new NotFoundException("NAME_NOT_EXIST");				  
+			  }
+			  else{
+				  throw new NotFoundException("NAME_NOT_UNIQUE");
+			  }
+		  }
+		  em.close();
+		  return retVal;
+	  }
+
+	  @ApiMethod(name="getAllGameTaskInstances", path="get_all_game_task_instances")
+	  public List<GameTaskInstance> getAllGameTaskInstances(){
+		  List<GameTaskInstance> retVal = null;
+		  EntityManager em = emf.createEntityManager();
+		  Query query = em.createQuery("SELECT gti FROM GameTaskInstance gti");
+		  retVal = query.getResultList();
+		  Collections.sort(retVal, new Comparator<GameTaskInstance>(){
+
+			@Override
+			public int compare(GameTaskInstance o1, GameTaskInstance o2) {
+				// TODO Auto-generated method stub
+				return o1.getGameInstance().getStudent().getFirstName().compareTo(o2.getGameInstance().getStudent().getFirstName());
+			}
+		  });
+		  return retVal;
+	  }
+	
+
 	  
 }

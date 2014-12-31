@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.api.server.spi.config.AnnotationBoolean;
+import com.google.api.server.spi.config.ApiResourceProperty;
+
 @Entity
 @Table(name = "GameInstance")
 public class GameInstance {
@@ -39,6 +42,7 @@ public class GameInstance {
 		return id;
 	}
 
+	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
 	public List<GameTaskInstance> getGameTaskInstances() {
 		return gameTaskInstances;
 	}	

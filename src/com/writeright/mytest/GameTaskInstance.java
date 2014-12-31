@@ -40,7 +40,6 @@ import com.google.api.server.spi.config.ApiResourceProperty;
 	   @JoinColumn(name="gameInstance",referencedColumnName="id")
 	GameInstance gameInstance;
 
-	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
 	public GameInstance getGameInstance() {
 		return gameInstance;
 	}

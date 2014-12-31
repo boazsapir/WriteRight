@@ -1,14 +1,14 @@
 <div class="gameboard">
 
 <div ng-show="currentLevel>0">
-<span class="levelHeader" ng-show="currentLevel>0"><h1>Level {{currentLevel}}</h1></span>
+<span class="levelHeader" ng-show="currentLevel>0"><h1>{{ 'LEVEL' | translate }} {{currentLevel}}</h1></span>
 <div class="wordImageContainer">
  <div class="wordImageBackground"><img draggable="false" class="wordImage" src="img/{{wordImage}}"></div>
  </div>
  <div class="midSpaceBar1"></div>
  
  <div class="brokenWord" ng-hide="wordSolved">
- <div class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span>
+ <div class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters:language track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span>
  </div>
  </div>
  <div class="solvedWord" ng-show="wordSolved">
@@ -22,7 +22,7 @@
 </div>
 <div class="feedbackArea">
 <span ng-show="feedbackVisible" ng-class="feedbackMessageCssVar">{{messageToPlayer}}</span><br>
-<span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">Next Level</button></span>
+<span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">{{'NEXT_LEVEL' | translate}}</button></span>
 </div>
 </div>
 
@@ -30,7 +30,36 @@
 <a href=""> <img src="/img/feedbackButton.png" ng-click="openFeedbackDialog()"></a>
 </div>
 
-<div ng-show="startButtonVisible && currentLevel==0" class="initialStartButtonArea"><button class="initalStartButton" ng-click="startGame()">Start</button></div>
+<!--  <div ng-show="loggedIn && startButtonVisible && currentLevel==0 && is_words_backend_ready" class="initialStartButtonArea"><button class="initalStartButton"  ng-click="startGame()">{{'START' | translate}}</button></div>
+-->
+<div class="spinner" ng-show="userNameSubmitted && (!is_words_backend_ready || !loggedIn)">
+  <div class="spinner-container container1">
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+    <div class="circle3"></div>
+    <div class="circle4"></div>
+  </div>
+  <div class="spinner-container container2">
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+    <div class="circle3"></div>
+    <div class="circle4"></div>
+  </div>
+  <div class="spinner-container container3">
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+    <div class="circle3"></div>
+    <div class="circle4"></div>
+  </div>
+</div>
+
+<div ng-show="!loggedIn" class="loginForm">
+<form ng-submit="userLogin()">
+{{'YOUR_NAME' | translate}}:&nbsp;<input type="text" name="firstName" ng-disabled="!firstSoundAvailable" ng-model="$parent.userFirstName" class="nameInput"><br>
+<input type="submit" id="submit" value="{{'START' | translate}}" ng-disabled="userFirstName=='' || userFirstName==null" class="initialStartButton">
+</form>
+<div class=loginFeedback>{{loginFeedback | translate}}</div>
+</div>
 
 <div class="trampolineContainer">
  <div class="score" ng-class="scoreCssVar">{{score}}</div>

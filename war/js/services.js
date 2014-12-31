@@ -9,22 +9,35 @@ angular.module('myApp.services', []).
   value('version', '0.2').
   service('diacritics', function() {
 
-	  this.isDiacritic = function(letter){
+	  this.isDiacritic = function(letter, language){
 		  var code = letter.charCodeAt(0);
-		  if ((code >= 1612 && code <= 1631) || code == 1575){
-			  return true;
+		  switch(language){
+		  case 'AR':
+			  if ((code >= 1612 && code <= 1631) || code == 1575){
+				  return true;
+			  }
+			  break;
+		  case 'HE':
+			  if(code>=0x5B0 && code<=0x5bc){
+				  return true;
+			  }
+			  break;
+		  default:	
+			  break;
 		  }
+		  
+
 		  return false;
 	  };
   }).service('wordHandler',function(diacritics){
-	  this.letterSeparator = function(word){
+	  this.letterSeparator = function(word, language){
 		  var letters = word.split("");
 		  var retVal = new Array();
 		  for (var i = 0, j = 0; i < letters.length; i++, j++) {
 			  retVal[j] = letters[i];
-			  if (i<letters.length-1 && diacritics.isDiacritic(letters[i+1])){
+			  if (i<letters.length-1 && diacritics.isDiacritic(letters[i+1],language)){
 				  retVal[j] += letters[++i];
-				  if (i<letters.length-1 && diacritics.isDiacritic(letters[i+1])){
+				  if (i<letters.length-1 && diacritics.isDiacritic(letters[i+1],language)){
 					  retVal[j] += letters[++i]; // case of 2 diacritics for one letter (e.g. shadda) 
 				  }
 			  }
@@ -32,11 +45,11 @@ angular.module('myApp.services', []).
 		  return retVal;
 	  };
 	  this.placeHolderChar = function(language){
-		  if (language.toUpperCase() == 'AR' ){
+		  if (language.toUpperCase() == 'AR'){
 			  return "ـــ"; // it looks the same but it is not
 		  }
 		  else{
-			  return "_";
+			  return "_"; // it looks the same but it is not
 		  }
 	  };
   }).service('audioService', function($http){

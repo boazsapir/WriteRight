@@ -10,6 +10,7 @@
    <param-name>services</param-name>
    <param-value>com.writeright.mytest.Guestbook,com.writeright.mytest.Words</param-value>
   </init-param>
+  <load-on-startup>1</load-on-startup>
  </servlet>
  <servlet>
   <servlet-name>SendFeedback</servlet-name>

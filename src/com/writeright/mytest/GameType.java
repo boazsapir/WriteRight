@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,6 +35,13 @@ public class GameType {
 	String name;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "gameType")
 	private List<GameLevel> gameLevels;
+	
+	
+	@ManyToOne
+	   @JoinColumn(name="LANGUAGE_LANGUAGECODE",referencedColumnName="LANGUAGECODE")
+	private Language language;
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -42,6 +51,16 @@ public class GameType {
 	@ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
 	public List<GameLevel> getGameLevels() {
 		return gameLevels;
+	}
+
+
+	public Language getLanguage() {
+		return language;
+	}
+
+
+	public void setLanguage(Language language) {
+		this.language = language;
 	}	
 
 }

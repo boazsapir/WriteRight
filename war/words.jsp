@@ -49,22 +49,26 @@
   </ul>
    -->
 
- <div ng-view ng-show="is_words_backend_ready" style="display: block;width:1200"></div>
+ <div ng-view  style="display: block;width:1200"></div>
 
 
  <!--  <div>Angular seed app: v<span app-version></span></div>
  -->	
 <%
 String gapiRoot = null;
+Boolean isProduction = true;
 if (SystemProperty.environment.value() ==
     SystemProperty.Environment.Value.Production) {
   // Load the class that provides the new "jdbc:google:mysql://" prefix.
- 
+	 
   gapiRoot = System.getProperty("appgapiroot.url");
 } else {
   // Local dev environment to use during development.
   gapiRoot = System.getProperty("appgapiroot.url.dev");
+  isProduction = false;
 }
+
+String gameTypeId = request.getParameter("gameId");
 
 %>
  
@@ -85,26 +89,37 @@ Please send your feedback by email to <b>tuval@appy2write.com</b>
 </div>  
 </div>
 </script>
- <script>var gapiRoot = "<%=gapiRoot%>";</script>
-<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
- <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
-<script src="./jquery.ui.touch-punch.js"></script>
- <script src="./bower_components/angular/angular.min.js"></script>
- <script src="./bower_components/angular-route/angular-route.min.js"></script>
- <script src="./bower_components/angular-animate/angular-animate.min.js"></script>
-   <script src="./bower_components/angular-touch/angular-touch.min.js"></script>
- 
-    <script src="./bower_components/ngDialog/js/ngDialog.min.js"></script>
-   <script src="./js/app.js"></script>
-  <script src="./js/services.js"></script>
-  <script src="./js/controllers.js"></script>
-  <script src="./js/filters.js"></script>
-  <script src="./js/directives.js"></script>
-    <script src="./js/animations.js"></script>
+	<script>var gapiRoot = "<%=gapiRoot%>";
+	</script>
+	<script>
+		var gameTypeId =
+	<%=gameTypeId != null ? gameTypeId : 2%>
+		;
+		var isProduction =
+	<%=isProduction%></script>
+	<script
+		src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+	<script
+		src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+	<script src="./jquery.ui.touch-punch.js"></script>
+	<script src="./bower_components/angular/angular.min.js"></script>
+	<script src="./bower_components/angular-route/angular-route.min.js"></script>
+	<script src="./bower_components/angular-animate/angular-animate.min.js"></script>
+	<script src="./bower_components/angular-touch/angular-touch.min.js"></script>
+	<script
+		src="./bower_components/angular-translate/angular-translate.min.js"></script>
 
-  <script src="https://apis.google.com/js/client.js?onload=startApp"></script>
+	<script src="./bower_components/ngDialog/js/ngDialog.min.js"></script>
+	<script src="./js/app.js"></script>
+	<script src="./js/services.js"></script>
+	<script src="./js/controllers.js"></script>
+	<script src="./js/filters.js"></script>
+	<script src="./js/directives.js"></script>
+	<script src="./js/animations.js"></script>
 
-  </body>
+	<script src="https://apis.google.com/js/client.js?onload=startApp"></script>
+
+</body>
 </html>

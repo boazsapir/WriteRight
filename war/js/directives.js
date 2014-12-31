@@ -53,7 +53,7 @@ directive('appVersion', ['version', function(version) {
         restrict: "A",
         link: function (scope, element, attributes, ctlr) {
         	if (document.useJQueryDraggable){
-        		if (attributes.letter == wordHandler.placeHolderChar('ar')){
+        		if (attributes.letter == wordHandler.placeHolderChar(scope.language)){
         			element.droppable({
         				activeClass: "letterDropTarget",
         				hoverClass: "letterDropTarget"
@@ -64,7 +64,7 @@ directive('appVersion', ['version', function(version) {
         		}
         	}
             element.bind("dragover", function(eventObject){
-            	if(attributes.letter == wordHandler.placeHolderChar('ar')){
+            	if(attributes.letter == wordHandler.placeHolderChar(scope.language)){
             		eventObject.preventDefault();
    
             		element.addClass("letterDropTarget");
