@@ -8,8 +8,8 @@ myApp.animation('.brokenWord',function(){
 		removeClass:  function(element, className, done){
 			TweenLite.set(element, {opacity:0} );
 			TweenLite.fromTo(element, 2, {opacity:0}, {opacity:1, ease:Power2.easeIn } );
-			var x = angular.element(element);
-			var y = x.scope();
+//			var x = angular.element(element);
+//			var y = x.scope();
 
 			}
 			

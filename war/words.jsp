@@ -8,6 +8,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name='viewport' content='width=device-width, height=device-height, initial-scale=0.9' />
  <link rel="stylesheet" href="./bower_components/ngDialog/css/ngDialog.css">
+ <link rel="stylesheet" href="./bower_components/ng-table/dist/ng-table.min.css">
 	<link rel="stylesheet" href="./bower_components/ngDialog/css/ngDialog-theme-default.css">
 	<link rel="stylesheet" href="./bower_components/ngDialog/css/ngDialog-theme-plain.css">
  	<script type='text/javascript'>
@@ -112,6 +113,7 @@ Please send your feedback by email to <b>tuval@appy2write.com</b>
 		src="./bower_components/angular-translate/angular-translate.min.js"></script>
 
 	<script src="./bower_components/ngDialog/js/ngDialog.min.js"></script>
+	<script src="./bower_components/ng-table/dist/ng-table.js"></script>
 	<script src="./js/app.js"></script>
 	<script src="./js/services.js"></script>
 	<script src="./js/controllers.js"></script>

@@ -26,7 +26,7 @@ src: url(../font/trado.ttf);
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-//	font-family: Tahoma;
+	font-family: Arial;
 }
 
 .userFeedbackButton{
@@ -60,7 +60,7 @@ src: url(../font/trado.ttf);
 	height: 140px;
 	color: #00576e;
 //	background: pink;
-	direction: rtl;
+//	direction: rtl;
 	text-align: center;
 	width: 70%;
 //	top: -20px;
@@ -74,7 +74,7 @@ src: url(../font/trado.ttf);
 	height: 0px;
 //	background: yellow;
 	text-align: center;
-	direction: rtl;
+//	direction: rtl;
 	width: 70%;
 }
 
@@ -86,7 +86,7 @@ src: url(../font/trado.ttf);
 	top: -20px;
 	font-size: 88;
 	font-weight: bold;
-	direction: rtl;
+//	direction: rtl;
 //	background: magenta;
 	text-align: center;
 }
@@ -96,7 +96,7 @@ src: url(../font/trado.ttf);
 //	background: red;
 	height: 90px;
 	text-align: center;
-	direction: rtl;
+//	direction: rtl;
 	top: -20px;
 	width: 70%;
 	
@@ -118,7 +118,7 @@ src: url(../font/trado.ttf);
 	font-size: 45px;
 	top: 30px;
 	display: inline-block;
-	direction: rtl; 
+//	direction: rtl; 
 
 }
 
@@ -547,5 +547,9 @@ src: url(../font/trado.ttf);
 #hor-zebra .odd
 {
 	background: #e8edff; 
+}
+
+.ng-table {
+    border: 1px solid #000;
 }
 

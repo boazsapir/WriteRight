@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,7 @@ public class Words {
 
 		    GameInstance gameInstance = new GameInstance();
 		    gameInstance.setStudent(studentObject);
+		    gameInstance.setDate(new Date());
 		    em.persist(gameInstance);
 		    em.getTransaction().commit();
 		    em.close();	
@@ -113,7 +115,21 @@ public class Words {
 		    em.getTransaction().commit();
 		    em.close();
 	  }
-	  
+	  @ApiMethod(name="addWordInLevel", path="add_word_in_level/{levelId}/{wordId}")
+	  public WordInLevel addWordInLevel(@Named("levelId")int levelId, @Named("wordId")int wordId,
+			  							@Named("distractors") List<String> distractors){
+		  	EntityManager em = emf.createEntityManager();
+		    em.getTransaction().begin();
+			Word word = em.find(Word.class, wordId);
+			GameLevel gameLevel = em.find(GameLevel.class, levelId);
+			WordInLevel wordInLevel = new WordInLevel(word, gameLevel, distractors);
+		    em.persist(wordInLevel);
+		    em.refresh(gameLevel);
+		    em.refresh(word);
+		    em.getTransaction().commit();
+		    em.close();	
+		    return wordInLevel;
+	  }
 	  public void addGameType(GameType gameType) {
 		  	EntityManager em = emf.createEntityManager();
 		    em.getTransaction().begin();
@@ -255,7 +271,7 @@ log.info("before query");
 		    
 
 	  }	  
-	  /*
+
 	  @ApiMethod(name = "getWordsByLanguage", path = "get_words_by_language")
 	  public List<Word> getWordsByLanguage(@Named("languageCode")String languageCode) {
 		  EntityManager em = emf.createEntityManager();
@@ -273,7 +289,7 @@ log.info("before query");
 
 
 	  }
-*/	  
+	  
 	  @ApiMethod(name = "getGameLevels", path = "get_game_levels")
 	  public List<GameLevel> getGameLevels(@Named("gameTypeId")int id) {
 

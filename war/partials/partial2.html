@@ -1,13 +1,34 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
- </p>
- <div>
-  <ul>
-  <li ng-repeat="word in words">
-  {{word.word}}
-        </ul>
 
-
+<div>
+Level Number:
+	<select ng-model="selectedGameLevel"
+		ng-options="row.levelIndex for row in levelsTableRows">
+	</select> <br>
+	<br>
+	<div>
+		Letter to complete: {{selectedGameLevel.letterNumToComplete}}
+		<ul>
+			<li ng-repeat="wordInLevel in selectedGameLevel.wordsInLevel">
+				{{wordInLevel.word.word}}
+				<div>
+				Distractors:
+					<span ng-repeat="distractor in wordInLevel.distractors">{{distractor}}
+					</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div>
+Choose word to add to this level:
+	<select ng-model="selectedWord"
+		ng-options="row.word for row in wordsTableRows">
+	</select>
+	<div>
+	<span ng-show="newDistractors.length>0">Distractors:</span> <span ng-repeat="newDistractor in newDistractors track by $index"><input ng-model="newDistractors[$index]" value={{newDistractor}}></span>
+	<button ng-click="addDistractor()">Add Distractor</button>
+	</div>
+	<div>
+	<button ng-click="addWordToLevel()">Add to Level</button>
+	</div>
 </div>

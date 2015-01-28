@@ -7,6 +7,7 @@ angular.module('myApp', [
   'ngAnimate',
   'ngTouch',
   'ngDialog',
+  'ngTable',
   'pascalprecht.translate',
   'myApp.filters',
   'myApp.services',

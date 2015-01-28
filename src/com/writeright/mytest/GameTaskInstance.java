@@ -33,7 +33,7 @@ import com.google.api.server.spi.config.ApiResourceProperty;
 	private int duration = 0;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.ALL)
-	   @JoinColumn(name="gameTaskInstance",referencedColumnName="id")
+	   @JoinColumn(name="wordInLevel",referencedColumnName="id")
 	WordInLevel wordInLevel;
 	
 	@ManyToOne(optional=false, cascade=CascadeType.ALL)

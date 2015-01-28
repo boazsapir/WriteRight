@@ -4,7 +4,29 @@
 
 
 angular.module('myApp.directives', []).
-directive('appVersion', ['version', function(version) {
+directive('formatDate', [function(){
+
+	return{
+		restrict: 'E',
+		scope: {
+			dateString: '='
+		},
+		link: function(scope, elm, attrs) {
+			function addZero(i) {
+			    if (i < 10) {
+			        i = "0" + i;
+			    }
+			    return i;
+			}
+
+			var date =new Date(scope.dateString);
+			if (!isNaN(date)){
+				elm.text( date.toLocaleDateString() + " " + addZero(date.getHours()) + ":" + addZero(date.getMinutes()));
+			}
+		}
+	};
+}])
+.directive('appVersion', ['version', function(version) {
 	return function(scope, elm, attrs) {
 		elm.text(version);
 	};

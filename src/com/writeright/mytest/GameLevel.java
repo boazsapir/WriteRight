@@ -95,4 +95,7 @@ public class GameLevel {
 
 		return wordsInLevel;
 	}
+	public int getId() {
+		return id;
+	}
 }
