@@ -3,7 +3,7 @@
 /* Directives */
 
 
-angular.module('myApp.directives', []).
+myApp.
 directive('formatDate', [function(){
 
 	return{
@@ -113,4 +113,51 @@ directive('formatDate', [function(){
 
         }
     };
-}]);
+}])
+.directive('wordInLevelEditor', function(){
+
+	return{
+	restrict: "E",
+	scope: {
+		wordId: '@id',
+		distractors: '=distractors'
+	},
+	transclude: true,
+	controller: function($scope){
+		$scope.editing=false;
+		$scope.errorMessage="";
+		//$scope.distractors=[];
+		$scope.addDistractor = function(){
+			if (typeof $scope.distractors == 'undefined'){
+				$scope.distractors = [];
+			}
+			$scope.distractors.push("");
+//			$scope.$apply();
+		};
+		$scope.updateWord = function(){
+//			$window.alert($scope.selectedWord.word + " " + $scope.selectedGameLevel.levelIndex);
+			gapi.client.request({
+				'path': gapiRoot + '/_ah/api/words/v1/update_word_in_level' +
+				 '/' + $scope.wordId,
+				'params' : {distractors: $scope.distractors},
+				'method' : 'POST'
+				}).execute(function(resp, rawresp){
+					if(resp){
+						$scope.editing=false;
+						$scope.distractors = resp.distractors;
+						$scope.$apply();						
+					}
+					else{
+						$scope.$apply($scope.errorMessage=rawresp);
+					}
+	
+				});
+		};
+	},	
+	link: function(scope, element, attrs, tabsCtrl) {
+		console.log(scope);
+
+	},
+	templateUrl: 'templates/edit-word.html'
+	};
+});

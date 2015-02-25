@@ -1,0 +1,12 @@
+<button ng-show="!editing" ng-click="editing=true">Edit</button>
+<div ng-show="editing">id: {{wordId}}&nbsp;
+<span ng-show="distractors.length>0">Distractors:</span> 
+<span ng-repeat="distractor in distractors track by $index">
+<input class="distractorInput" ng-model="distractors[$index]" value={{distractor}}></span>
+<button ng-click="addDistractor()">Add Distractor</button>
+<div>
+<button ng-click="editing=false">Cancel</button>
+<button ng-click="updateWord()">Update</button>
+<span>{{errorMessage}}</span>
+</div>
+</div>

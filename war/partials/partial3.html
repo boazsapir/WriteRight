@@ -1,4 +1,4 @@
-<div class="gameboard">
+<div class="gameboard {{langDir}}">
 
 <div ng-show="currentLevel>0">
 <span class="levelHeader" ng-show="currentLevel>0"><h1>{{ 'LEVEL' | translate }} {{currentLevel}}</h1></span>
@@ -17,7 +17,7 @@
 
 
  <div class="distractorsList">
-<span ng-repeat="distractor in currentDistractors" class="distractor" ng-click="letterSelected(distractor, null)"  distractor={{distractor}}>
+<span ng-repeat="distractor in currentDistractors track by $index" class="distractor" ng-click="letterSelected(distractor, null)"  distractor={{distractor}}>
 <span class="innerDistractor" ng-hide="wordSolved" ng-class="distractorCssVar" draggable-letter="true" distractor={{distractor}}>{{distractor}}</span>&nbsp;</span>
 </div>
 <div class="feedbackArea">
@@ -26,13 +26,15 @@
 </div>
 </div>
 
+<!--
 <div class="userFeedbackButton">
 <a href=""> <img src="/img/feedbackButton.png" ng-click="openFeedbackDialog()"></a>
 </div>
+-->
 
 <!--  <div ng-show="loggedIn && startButtonVisible && currentLevel==0 && is_words_backend_ready" class="initialStartButtonArea"><button class="initalStartButton"  ng-click="startGame()">{{'START' | translate}}</button></div>
 -->
-<div class="spinner" ng-show="userNameSubmitted && (!is_words_backend_ready || !loggedIn)">
+<div class="spinner {{langDir}}" ng-show="userNameSubmitted && (!is_words_backend_ready || !loggedIn)">
   <div class="spinner-container container1">
     <div class="circle1"></div>
     <div class="circle2"></div>
@@ -53,7 +55,7 @@
   </div>
 </div>
 
-<div ng-show="!loggedIn" class="loginForm">
+<div ng-show="!loggedIn && language!=null" class="loginForm">
 <form ng-submit="userLogin()">
 {{'YOUR_NAME' | translate}}:&nbsp;<input type="text" name="firstName" ng-disabled="!firstSoundAvailable" ng-model="$parent.userFirstName" class="nameInput"><br>
 <input type="submit" id="submit" value="{{'START' | translate}}" ng-disabled="userFirstName=='' || userFirstName==null" class="initialStartButton">
@@ -61,7 +63,7 @@
 <div class=loginFeedback>{{loginFeedback | translate}}</div>
 </div>
 
-<div class="trampolineContainer">
+<div class="trampolineContainer {{langDir}}">
  <div class="score" ng-class="scoreCssVar">{{score}}</div>
  <div class="duck" ng-class="duckCssVar"><img draggable="false" ng-src='img/{{duckImage}}.png'></div>
 <div class="trampoline" ng-class="trampolineCssVar" ></div>

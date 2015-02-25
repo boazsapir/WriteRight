@@ -1,6 +1,7 @@
 package com.writeright.mytest;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ public class WordInLevel {
 		super();
 		this.word = word;
 		this.gameLevel = gameLevel;
-		this.distractors = distractors;
+		this.setDistractors(distractors);
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,6 +65,11 @@ public class WordInLevel {
 	}
 
 	public void setDistractors(List<String> distractors) {
+		for (Iterator<String> iter = distractors.listIterator(); iter.hasNext(); ) {
+		    if (iter.next().isEmpty()) {
+		        iter.remove();
+		    }
+		}
 		this.distractors = distractors;
 	}
 	

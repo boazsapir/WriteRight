@@ -20,6 +20,7 @@ import javax.inject.Named;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.DefaultValue;
 import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.NotFoundException;
@@ -53,12 +54,14 @@ public class Words {
 	        "Demo", properties);
 
 	}
-	  public void addStudent(Student student) {
-		  	EntityManager em = emf.createEntityManager();
-		    em.getTransaction().begin();
-		    em.persist(new Student(student));
-		    em.getTransaction().commit();
-		    em.close();
+	  public Student addStudent(@Named("firstName") String firstName, @Named("lastName") String lastName) {
+		  Student retVal = null;
+		  EntityManager em = emf.createEntityManager();
+		  em.getTransaction().begin();
+		  em.persist(retVal = new Student(firstName, lastName));
+		  em.getTransaction().commit();
+		  em.close();
+		  return retVal;
 	  }	  
 	  public GameInstance newGameInstance (@Named("studentId")int studentId){
 		  	EntityManager em = emf.createEntityManager();
@@ -126,6 +129,17 @@ public class Words {
 		    em.persist(wordInLevel);
 		    em.refresh(gameLevel);
 		    em.refresh(word);
+		    em.getTransaction().commit();
+		    em.close();	
+		    return wordInLevel;
+	  }
+	  @ApiMethod(name="updateWordInLevel", path="update_word_in_level/{wordInLevelId}", httpMethod = HttpMethod.POST)
+	  public WordInLevel updateWordInLevel(@Named("wordInLevelId")int wordInLevelId,
+			  							@Named("distractors") List<String> distractors){
+		  	EntityManager em = emf.createEntityManager();
+		    em.getTransaction().begin();
+			WordInLevel wordInLevel = em.find(WordInLevel.class, wordInLevelId);
+			wordInLevel.setDistractors(distractors);
 		    em.getTransaction().commit();
 		    em.close();	
 		    return wordInLevel;
@@ -313,6 +327,18 @@ log.info("before query");
 		  em.close();
 		  return retVal;
 	  }
+	  
+	  @ApiMethod(name = "getGameTypes", path = "get_game_types")
+	  public List<GameType> getGameTypes() {
+
+		  EntityManager em = emf.createEntityManager();
+		  Query query = em.createQuery("SELECT gti FROM GameType gti");
+		  List<GameType> retVal = query.getResultList();
+
+		  em.close();
+		  return retVal;
+
+	  }
 	  // for performance optimization: this version omits the word lists of all levels except the first
 	  // word lists can be fetched when necessary by calling getWordsByLevel
 	  @ApiMethod(name = "getGameLevels1", path = "get_game_levels1")
@@ -375,6 +401,7 @@ log.info("before query");
 		  } catch (UnsupportedEncodingException e) {
 			  // TODO Auto-generated catch block
 			  e.printStackTrace();
+			  throw new IllegalArgumentException();
 		  }
 		  
 		  if (lastName != null){
@@ -387,20 +414,29 @@ log.info("before query");
 			  query.setParameter("arg1", decodedFirstName);			  
 		  }
 		  List<Student> queryResult = query.getResultList();
-		  if (queryResult != null && queryResult.size() == 1){
+		  if (queryResult != null && queryResult.size() != 0){
 			  retVal = queryResult.get(0);
 		  }
 		  else{
-			  em.close();
-			  if(queryResult == null || queryResult.size() == 0){
-				  throw new NotFoundException("NAME_NOT_EXIST");				  
-			  }
-			  else{
-				  throw new NotFoundException("NAME_NOT_UNIQUE");
-			  }
+			em.close();
+			throw new NotFoundException("NAME_NOT_EXIST");				  
 		  }
 		  em.close();
 		  return retVal;
+	  }
+	  
+	  @ApiMethod(name="loginByName", path="login_by_name/{firstName}", httpMethod = HttpMethod.GET)
+	  public Student loginByName(@Named("firstName") String firstName, @Named("lastName") @Nullable String lastName) {
+		  Student retVal;
+		  try {
+			  retVal = getStudentByName(firstName, lastName);				  			  
+		  }
+		  catch(NotFoundException ex){
+			  retVal = addStudent(firstName, lastName);
+
+		  }
+		  return retVal;
+		  
 	  }
 
 	  @ApiMethod(name="getAllGameTaskInstances", path="get_all_game_task_instances")

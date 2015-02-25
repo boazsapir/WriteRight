@@ -18,6 +18,12 @@ import com.google.api.server.spi.config.ApiResourceProperty;
 @Table(name = "Student")
 public class Student {
 
+	public Student(String firstName, String lastName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
 	public Student(Student student) {
 		super();
 		this.firstName = student.firstName;

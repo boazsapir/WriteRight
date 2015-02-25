@@ -1,4 +1,14 @@
-
+<link rel="stylesheet" href="./bower_components/bootstrap/css/bootstrap.css">
+<div>
+Game Number:
+	<select ng-change="selectGame()" ng-model="selectedGameId"
+		ng-options="row.name for row in typesTableRows">
+	</select> <br>
+	<br>
+Language: {{selectedGameId.language.languageCode}}
+<br>
+<br>	
+</div>
 <div>
 Level Number:
 	<select ng-model="selectedGameLevel"
@@ -7,16 +17,18 @@ Level Number:
 	<br>
 	<div>
 		Letter to complete: {{selectedGameLevel.letterNumToComplete}}
-		<ul>
-			<li ng-repeat="wordInLevel in selectedGameLevel.wordsInLevel">
-				{{wordInLevel.word.word}}
-				<div>
+		<br><br>
+		<table class="table table-condensed">
+			<tr ng-repeat="wordInLevel in selectedGameLevel.wordsInLevel">
+				<td class="col-md-1">{{wordInLevel.word.word}}</td>
+				<td class="col-md-2">
 				Distractors:
-					<span ng-repeat="distractor in wordInLevel.distractors">{{distractor}}
+					<span ng-repeat="distractor in wordInLevel.distractors track by $index">{{distractor}}
 					</span>
-				</div>
-			</li>
-		</ul>
+				</td>
+				<td "col-md-1"><word-in-level-editor id="{{wordInLevel.id}}" distractors="wordInLevel.distractors">{{wordInLevel.id}}aaaaa</word-in-level-editor></td>
+			</tr>
+		</table>
 	</div>
 </div>
 <div>

@@ -5,9 +5,19 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('myApp.services', []).
+myApp.
   value('version', '0.2').
-  service('diacritics', function() {
+  service('languageSettings', function(){
+	 this.direction = function(language){
+		  switch(language){
+		  case 'HE':
+		  case 'AR':
+			  return "rtl";
+		  default:	
+			  return "ltr";
+		  }		 
+	 };
+  }).service('diacritics', function() {
 
 	  this.isDiacritic = function(letter, language){
 		  var code = letter.charCodeAt(0);
@@ -29,18 +39,39 @@ angular.module('myApp.services', []).
 
 		  return false;
 	  };
+	  this.isOptionalDiacritic = function(letter, language){
+		  var code = letter.charCodeAt(0);
+		  switch(language){
+		  case 'AR':
+			  if (code >= 1612 && code <= 1631){
+				  return true;
+			  }
+			  break;
+
+		  default:
+			  if (this.isDiacritic(letter, language)){
+				  return true;
+			  }
+			  break;
+		  }
+		  
+
+		  return false;
+	  };
   }).service('wordHandler',function(diacritics){
 	  this.letterSeparator = function(word, language){
 		  var letters = word.split("");
-		  var retVal = new Array();
-		  for (var i = 0, j = 0; i < letters.length; i++, j++) {
-			  retVal[j] = letters[i];
+		  var retVal = [];
+		  for (var i = 0, j = 0; i < letters.length; i++) {
+			  var curLetter = letters[i];
+			  //retVal[j] = letters[i];
 			  if (i<letters.length-1 && diacritics.isDiacritic(letters[i+1],language)){
-				  retVal[j] += letters[++i];
+				  curLetter += letters[++i];
 				  if (i<letters.length-1 && diacritics.isDiacritic(letters[i+1],language)){
-					  retVal[j] += letters[++i]; // case of 2 diacritics for one letter (e.g. shadda) 
+					  curLetter += letters[++i]; // case of 2 diacritics for one letter (e.g. shadda) 
 				  }
 			  }
+			  retVal.push(curLetter);
 		  }
 		  return retVal;
 	  };
@@ -51,6 +82,16 @@ angular.module('myApp.services', []).
 		  else{
 			  return "_"; // it looks the same but it is not
 		  }
+	  };
+	  this.removeDiacritics = function(word, language){
+		  var letters = word.split("");
+		  var retVal = "";
+		  for (var i = 0, j = 0; i < letters.length; i++) {
+			  if(!diacritics.isOptionalDiacritic(letters[i], language)){
+				  retVal+= letters[i];
+			  }
+		  }
+		  return retVal.toString();
 	  };
   }).service('audioService', function($http){
 	  try{

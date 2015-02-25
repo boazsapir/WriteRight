@@ -21,12 +21,19 @@ src: url(../font/trado.ttf);
 	width: 916px;
 	height: 688px;
 	background-image: url(../img/background.png);
-	direction: rtl;
+
 	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	font-family: Arial;
+}
+
+.gameBoard.ltr{
+	direction: ltr;	
+}
+.gameBoard.rtl{
+	direction: rtl;	
 }
 
 .userFeedbackButton{
@@ -121,28 +128,6 @@ src: url(../font/trado.ttf);
 //	direction: rtl; 
 
 }
-
-.distractor.ng-enter {
-	transition: 1s linear all;
-	opacity: 0;
-	-webkit-transform: skew(30deg, 20deg);
-}
-
-.distractor.ng-enter-active {
-	opacity: 1;
-	-webkit-transform: skew(0deg, 0deg);
-}
-
-.distractor.ng-enter-stagger {
-	/* this will have a 100ms delay between each successive leave animation */
-	-webkit-transition-delay: 0.3s;
-	transition-delay: 0.3s;
-	/* in case the stagger doesn't work then these two values
-   must be set to 0 to avoid an accidental CSS inheritance */
-	-webkit-transition-duration: 0s;
-	transition-duration: 0s;
-}
-
 
 
 .feedbackToPlayer.ng-hide-remove {
@@ -282,11 +267,19 @@ src: url(../font/trado.ttf);
 
 .trampolineContainer{
 	position: absolute;
-	left: 60px;
+//	left: 60px;
 	bottom: 20px;
 	width: 160px;
 	height: 600px;
 	//background: purple;
+}
+.trampolineContainer.ltr{
+	right: 60px;
+
+}
+.trampolineContainer.rtl{
+	left: 60px;
+
 }
 .score {
 	position: absolute;
@@ -345,12 +338,19 @@ src: url(../font/trado.ttf);
 		
 	
 .spinner {
-  margin-right: 320px;
+  position: relative;
   top: 330px;
   width: 40px;
   height: 0px;
-  position: relative;
   z-index: 4;
+}
+.spinner.rtl{
+  margin-right: 320px;
+  	
+}
+.spinner.ltr{
+  margin-left: 320px;
+  	
 }
 
 .container1 > div, .container2 > div, .container3 > div {
@@ -552,4 +552,10 @@ src: url(../font/trado.ttf);
 .ng-table {
     border: 1px solid #000;
 }
+
+
+.distractorInput {
+	width: 20px;
+}
+
 

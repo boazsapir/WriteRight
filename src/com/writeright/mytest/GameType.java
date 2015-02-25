@@ -61,6 +61,11 @@ public class GameType {
 
 	public void setLanguage(Language language) {
 		this.language = language;
+	}
+
+
+	public int getId() {
+		return id;
 	}	
 
 }

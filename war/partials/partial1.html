@@ -14,8 +14,8 @@
   </thead>
   -->
   <tbody>
-  <tr ng-repeat="row in $data"><td class="text-center"  data-title="'Name'" sortable="'gameInstance.student.firstName'">{{row.gameInstance.student.firstName}}</td>
-  <td class="text-center" data-title="'Word'">{{row.wordInLevel.word.word}}</td><td class="text-center" data-title="'Duration'" sortable="'duration'">{{row.duration}}</td>
+  <tr class ="text-center" ng-repeat="row in $data"><td data-title="'Name'" sortable="'gameInstance.student.firstName'">{{row.gameInstance.student.firstName}}</td>
+  <td data-title="'Word'">{{row.wordInLevel.word.word}}</td><td data-title="'Duration'" sortable="'duration'">{{row.duration}}</td>
   
  
   <td data-title="'Wrong Selections'"> 

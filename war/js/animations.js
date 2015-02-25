@@ -1,7 +1,7 @@
 'use strict';
 
 /* Animations */
-var myApp = angular.module('myApp.animations', []);
+//var myApp = angular.module('myApp.animations', []);
 
 myApp.animation('.brokenWord',function(){
 	return{
@@ -50,6 +50,19 @@ myApp.animation('.solvedWord',function(){
 
 }
 );
+myApp.animation('.distractor',function(){
+	return{
+		enter:  function(element, done){
+//			TweenLite.set(element, {bottom: "120px"});
+			TweenLite.set(element, {opacity:0} );
+			TweenLite.fromTo(element, 2, {opacity:0, transform: "skew(15deg, 10deg)"}, {opacity:1,  transform: "skew(0deg, 0deg)", ease:Power1.easeIn } );
+		}
+
+	};
+
+}
+);
+/* redundant because of brokenWord animation
 myApp.animation('.letterInWord',function(){
 	return{
 		enter:  function(element, done){
@@ -62,6 +75,7 @@ myApp.animation('.letterInWord',function(){
 
 }
 );
+*/
 myApp.animation('.feedbackMessage',function(){
 	return{
 

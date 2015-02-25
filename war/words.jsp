@@ -70,9 +70,9 @@ if (SystemProperty.environment.value() ==
 }
 
 String gameTypeId = request.getParameter("gameId");
+String hideDiacritics = request.getParameter("hideDiacritics");
 
 %>
- 
 <script type="text/ng-template" id="firstDialogId">
 <div class="ngdialog-content" ng-controller="FeedbackForm">
 <form ng-hide="feedbackSubmitted || feedbackSubmissionFailed" ng-submit="sendUserFeedback()"  class="ngdialog-input">
@@ -93,9 +93,8 @@ Please send your feedback by email to <b>tuval@appy2write.com</b>
 	<script>var gapiRoot = "<%=gapiRoot%>";
 	</script>
 	<script>
-		var gameTypeId =
-	<%=gameTypeId != null ? gameTypeId : 2%>
-		;
+		var gameTypeId = <%=gameTypeId != null ? gameTypeId : 2%>;
+		var hideDiacritics = <%=hideDiacritics != null ? true : false %>;
 		var isProduction =
 	<%=isProduction%></script>
 	<script
