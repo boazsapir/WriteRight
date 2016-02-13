@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="mytest1">
+    <wb-module deploy-name="WriteRight">
         <wb-resource deploy-path="/" source-path="/war"/>
-        <property name="context-root" value="mytest1"/>
+        <property name="context-root" value="WriteRight"/>
     </wb-module>
 </project-modules>

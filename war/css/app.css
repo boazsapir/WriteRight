@@ -43,28 +43,21 @@ src: url(../font/trado.ttf);
 }
 
 
-.brokenWord.ng-hide-add {
+
+
+.solvedWord1.ng-hide-remove {
 	transition: 5s linear all;
 	opacity: 1;
 }
 
-.brokenWord.ng-hide-add-active {
+.solvedWord1.ng-hide-remove-active {
 	opacity: 0;
-}
 
-.brokenWord1.ng-hide-remove {
-	transition: 5s linear all;
-	opacity: 0;
-}
-
-.brokenWord1.ng-hide-remove-active {
-	opacity: 1;
-	color: red;
 }
 
 .brokenWord {
 	position: relative;
-	height: 140px;
+
 	color: #00576e;
 //	background: pink;
 //	direction: rtl;
@@ -88,6 +81,8 @@ src: url(../font/trado.ttf);
 .letterInWord {
 	position: relative;
 	display: inline-block;
+	color: #00576e;
+	
 	height: 120px;
 	padding-top: 20px;
 	top: -20px;
@@ -96,6 +91,9 @@ src: url(../font/trado.ttf);
 //	direction: rtl;
 //	background: magenta;
 	text-align: center;
+}
+.innerLetter{
+	
 }
 
 .distractorsList { 
@@ -112,14 +110,14 @@ src: url(../font/trado.ttf);
 .innerDistractor {
 	display: inline-block;
 	background : white; 
-	padding-right: 5px;
-	padding-left: 5px;
+	padding-right: 18px;
+	padding-left: 18px;
 	margin-right:4px;
 	margin-left: 4px;
 	height: 75px;	
 }
 
-.distractor {
+.outerDistractor {
 	position: relative;
 	color: #00576e;
 	font-size: 45px;

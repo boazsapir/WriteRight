@@ -3,7 +3,7 @@
 /* Animations */
 //var myApp = angular.module('myApp.animations', []);
 
-myApp.animation('.brokenWord',function(){
+myApp.animation('.letterInWord1',function(){
 	return{
 		removeClass:  function(element, className, done){
 			TweenLite.set(element, {opacity:0} );
@@ -34,17 +34,17 @@ myApp.animation('.brokenWord',function(){
 );
 myApp.animation('.solvedWord',function(){
 	return{
-		beforeAddClass:  function(element, className, done){
+//		beforeAddClass:  function(element, className, done){
 //			TweenLite.set(element, {bottom: "132px"});
-			var tl = new TimelineLite({paused:false});
-			tl.set(element, {bottom: "140px"}).to(element, 1, {opacity:0}).set(element, {bottom: "0px"});
-			//TweenLite.to(element, 1,  {opacity:0} );
-		},
+//			var tl = new TimelineLite({paused:false});
+//			tl.set(element, {bottom: "140px"}).to(element, 1, {opacity:0}).set(element, {bottom: "0px"});
+//			//TweenLite.to(element, 1,  {opacity:0} );
+//		},
 	removeClass:  function(element, done){
 		var tl = new TimelineLite({paused:false});
 		tl.set(element, {opacity:0});
-		tl.to(element, 1, {opacity:1}).to(element, 1, {bottom: "0px"});
-		//.to(element, 1, {opacity:0});
+		tl.to(element, 2, {opacity:1});
+//		.to(element, 2, {opacity:0});
 		}
 	};
 
@@ -62,20 +62,9 @@ myApp.animation('.distractor',function(){
 
 }
 );
-/* redundant because of brokenWord animation
-myApp.animation('.letterInWord',function(){
-	return{
-		enter:  function(element, done){
-//			TweenLite.set(element, {bottom: "120px"});
-			TweenLite.set(element, {opacity:0} );
-			TweenLite.fromTo(element, 2, {opacity:0}, {opacity:1, ease:Power2.easeIn } );
-		}
 
-	};
 
-}
-);
-*/
+
 myApp.animation('.feedbackMessage',function(){
 	return{
 
@@ -183,6 +172,27 @@ myApp.animation('.wrongLetterSelection',function(){
 	}
 
 		}
+	};
+}
+);
+myApp.animation('.highlightedLetter',function(){
+	return{
+
+
+		beforeAddClass:  function(element, done){
+			var x = angular.element(element);
+			var y = x.scope();
+//			window.alert(element[0].textContent.charAt(2));
+//			window.alert(element[0].attributes.distractor.nodeValue);
+			if (y.highlightedLetter == parseInt(element[0].attributes.letterindex.nodeValue)){
+				var tl = new TimelineLite({paused:false});
+				tl.to(element, 0.5, {backgroundColor: "gray"})
+				.to(element, 0.5, {backgroundColor: "transparent"});
+			}
+			
+
+		},
+
 	};
 }
 );

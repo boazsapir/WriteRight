@@ -1,15 +1,16 @@
 <div class="gameboard {{langDir}}">
 
-<div ng-show="currentLevel>0">
+<div ng-show="currentLevel>0&&!updatingLevel">
 <span class="levelHeader" ng-show="currentLevel>0"><h1>{{ 'LEVEL' | translate }} {{currentLevel}}</h1></span>
 <div class="wordImageContainer">
- <div class="wordImageBackground"><img draggable="false" class="wordImage" src="img/{{wordImage}}"></div>
+ <div class="wordImageBackground" ng-click="imageClicked()"><img draggable="false" class="wordImage" src="img/{{wordImage}}"></div>
  </div>
  <div class="midSpaceBar1"></div>
  
  <div class="brokenWord" ng-hide="wordSolved">
- <div class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters:language track by $index" >&nbsp;<span letter={{letter}} letter-drop-target>{{letter}}</span>
+ <div class="letterInWord" ng-repeat="letter in currentWord | displayWordForGame:extractedLetterIndex:solvedLetters:language track by $index">&nbsp;<span ng-class="letterCssVar" letter={{letter}} letterindex={{$index}} letter-drop-target>{{letter}}</span>
  </div>
+ 
  </div>
  <div class="solvedWord" ng-show="wordSolved">
  {{solvedWord}}
@@ -17,9 +18,10 @@
 
 
  <div class="distractorsList">
-<span ng-repeat="distractor in currentDistractors track by $index" class="distractor" ng-click="letterSelected(distractor, null)"  distractor={{distractor}}>
-<span class="innerDistractor" ng-hide="wordSolved" ng-class="distractorCssVar" draggable-letter="true" distractor={{distractor}}>{{distractor}}</span>&nbsp;</span>
+<span ng-repeat="distractor in currentDistractors track by $index" class="outerDistractor" distractor={{distractor}}>
+<span class="innerDistractor" ng-hide="wordSolved" ng-class="distractorCssVar" ng-click="letterClicked(distractor)" draggable-letter="true" distractor={{distractor}}>{{distractor}}</span>&nbsp;</span>
 </div>
+
 <div class="feedbackArea">
 <span ng-show="feedbackVisible" ng-class="feedbackMessageCssVar">{{messageToPlayer}}</span><br>
 <span ng-show="startButtonVisible"><button class="startButton" ng-click="startNextLevel()">{{'NEXT_LEVEL' | translate}}</button></span>

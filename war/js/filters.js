@@ -22,7 +22,7 @@ filter('interpolate', ['version', function(version) {
 						retVal[i] = wordHandler.placeHolderChar(language);
 					}
 				}
-				else if (!(i == letterToExclude-1 || (letterToExclude == -1 && i==letters.length-1))){
+				else if (!(i == letterToExclude-1 || (letterToExclude == -1 && i==letters.length-1)) || solvedLetters[i] == true){
 					retVal[i] = letters[i];
 
 				}

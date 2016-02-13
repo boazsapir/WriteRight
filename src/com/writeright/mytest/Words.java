@@ -79,7 +79,9 @@ public class Words {
 	  }
 	  public void addGameTaskInstance(@Named("gameInstanceId")int gameInstanceId,
 			  LetterSelectionList wrongLetterSelections, @Named("wordInLevelId")int wordInLevelId,
-			  @Named("duration")int duration){
+			  @Named("duration")int duration, @Named("pronounceLetters")boolean pronounceLetters,
+			  @Named("highlightLetters")boolean highlightLetters, @Named("gameId")int gameId,
+			  @Named("letterNumToComplete")int letterNumToComplete){
 
 		  EntityManager em = emf.createEntityManager();
 		  em.getTransaction().begin();
@@ -94,6 +96,10 @@ public class Words {
 			  if (wordInLevel != null){
 				  gameTaskInstance.setWordInLevel(wordInLevel);
 			  }
+			  gameTaskInstance.setPronounceLetters(pronounceLetters);
+			  gameTaskInstance.setHighlightLetters(highlightLetters);
+			  gameTaskInstance.setGameId(gameId);
+			  gameTaskInstance.setLetterNumToComplete(letterNumToComplete);
 			  em.persist(gameTaskInstance);
 			  em.getTransaction().commit();		    	
 		  }

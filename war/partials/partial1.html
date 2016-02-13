@@ -10,13 +10,15 @@
   <table class="table table-striped table-hover table-condensed" ng-table="tableParams" template-pagination="custom/pager" class="table">
   <!--  
   <thead>
-  <tr><th class="col-md-2">Name</th><th class="col-md-2">Word</th><th class="col-md-2" sortable="'duration'">Duration</th><th class="col-md-2">Wrong Selections</th><th class="col-md-4">Game Start Time</th></tr>
+  <tr><th class="col-md-2">Name</th><th class="col-md-2">Word</th><th class="col-md-2" sortable="'duration'">Duration</th><th class="col-md-2">Wrong Selections</th><th class="col-md-4">Game Start Time</th>
+  <th class="col-md-2">Game Id</th><th class="col-md-2">Missing Letter</th>
+  <th class="col-md-2">Highlight Letters</th><th class="col-md-2">Pronounce Letters</th>
+  </tr>
   </thead>
   -->
   <tbody>
   <tr class ="text-center" ng-repeat="row in $data"><td data-title="'Name'" sortable="'gameInstance.student.firstName'">{{row.gameInstance.student.firstName}}</td>
   <td data-title="'Word'">{{row.wordInLevel.word.word}}</td><td data-title="'Duration'" sortable="'duration'">{{row.duration}}</td>
-  
  
   <td data-title="'Wrong Selections'"> 
   
@@ -26,6 +28,10 @@
  
   </td>
 <td data-title="'Game Start Time'" sortable="'gameInstance.date'"> <format-date date-string="row.gameInstance.date"></format-date></td>
+ <td data-title="'Game Id'">{{row.gameId-3}}</td>
+  <td data-title="'Missing Letter'">{{row.letterNumToComplete}}</td>   
+  <td data-title="'Highlight Letters'">{{row.highlightLetters}}</td> 
+  <td data-title="'Pronounce Letters'">{{row.pronounceLetters}}</td>   
   </tr>
  </tbody>
   </table>

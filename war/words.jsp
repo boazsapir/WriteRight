@@ -70,7 +70,10 @@ if (SystemProperty.environment.value() ==
 }
 
 String gameTypeId = request.getParameter("gameId");
+String startFromLevel = request.getParameter("startFromLevel");
 String hideDiacritics = request.getParameter("hideDiacritics");
+String highlightLetters = request.getParameter("highlightLetters");
+String pronounceLetters = request.getParameter("pronounceLetters");
 
 %>
 <script type="text/ng-template" id="firstDialogId">
@@ -94,7 +97,10 @@ Please send your feedback by email to <b>tuval@appy2write.com</b>
 	</script>
 	<script>
 		var gameTypeId = <%=gameTypeId != null ? gameTypeId : 2%>;
+		var startFromLevel = <%=startFromLevel != null ? startFromLevel : 1%>;
 		var hideDiacritics = <%=hideDiacritics != null ? true : false %>;
+		var highlightLetters = <%=highlightLetters != null ? true : false %>;
+		var pronounceLetters = <%=pronounceLetters != null ? true : false %>;
 		var isProduction =
 	<%=isProduction%></script>
 	<script

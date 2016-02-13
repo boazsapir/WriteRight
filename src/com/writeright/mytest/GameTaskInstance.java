@@ -32,6 +32,11 @@ import com.google.api.server.spi.config.ApiResourceProperty;
 	
 	private int duration = 0;
 	
+	private int gameId;
+	private int letterNumToComplete;
+	private boolean pronounceLetters;
+	private boolean highlightLetters;
+	
 	@ManyToOne(optional=false, cascade=CascadeType.ALL)
 	   @JoinColumn(name="wordInLevel",referencedColumnName="id")
 	WordInLevel wordInLevel;
@@ -75,6 +80,30 @@ import com.google.api.server.spi.config.ApiResourceProperty;
 	}
 	public void setDuration(int duration) {
 		this.duration = duration;
+	}
+	public int getGameId() {
+		return gameId;
+	}
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
+	}
+	public int getLetterNumToComplete() {
+		return letterNumToComplete;
+	}
+	public void setLetterNumToComplete(int letterNumToComplete) {
+		this.letterNumToComplete = letterNumToComplete;
+	}
+	public boolean isPronounceLetters() {
+		return pronounceLetters;
+	}
+	public void setPronounceLetters(boolean pronounceLetters) {
+		this.pronounceLetters = pronounceLetters;
+	}
+	public boolean isHighlightLetters() {
+		return highlightLetters;
+	}
+	public void setHighlightLetters(boolean highlightLetters) {
+		this.highlightLetters = highlightLetters;
 	}
 	
 }

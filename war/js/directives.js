@@ -56,13 +56,13 @@ directive('formatDate', [function(){
 		}
 
 		element.bind("dragstart", function(eventObject) {
-
+//	      	 window.alert('start drag');
 			if (!document.useJQueryDraggable){
 				eventObject.originalEvent.dataTransfer.setData("text", attributes.distractor);
 			}
 		});
         element.bind("touchstart", function(eventObject){
-        	 
+  
         });
 	}
 	return {
@@ -75,7 +75,7 @@ directive('formatDate', [function(){
         restrict: "A",
         link: function (scope, element, attributes, ctlr) {
         	if (document.useJQueryDraggable){
-        		if (attributes.letter == wordHandler.placeHolderChar(scope.language)){
+        		if (attributes.letterindex == scope.currentLetterToComplete){
         			element.droppable({
         				activeClass: "letterDropTarget",
         				hoverClass: "letterDropTarget"
@@ -86,7 +86,7 @@ directive('formatDate', [function(){
         		}
         	}
             element.bind("dragover", function(eventObject){
-            	if(attributes.letter == wordHandler.placeHolderChar(scope.language)){
+            	if(attributes.letterindex == scope.currentLetterToComplete){
             		eventObject.preventDefault();
    
             		element.addClass("letterDropTarget");
