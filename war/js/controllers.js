@@ -70,16 +70,40 @@ myApp.controller('MyCtrl2', function($scope, $window) {
 
 	  });
 myApp.controller('MyCtrl1', function($window, $scope, $q, $filter, wordHandler, ngTableParams) {
-
-	$scope.$watch(function(scope){return scope.is_words_backend_ready;},function(newVal, oldVal){
-//		$window.alert($scope.is_words_backend_ready);
-//		gapi.client.words.getAllGameTaskInstances(requestData).execute(function(resp){
-//		$scope.tableRows = resp.items;
-//		$scope.$apply();
-//		});
-
-//		$defer.resolve($scope.tableRows);
-		if (newVal == true){
+	$scope.firstName = '';
+	$scope.getReport = function(){
+		if ($scope.firstName != ''){
+			gapi.client.request({
+				'path': gapiRoot + '/_ah/api/words/v1/get_game_task_instances_by_first_name/' + $scope.firstName,
+				'params' : {}
+			}).execute(function(resp){
+				if (resp.items.length > 0){
+					$scope.tableParams = new ngTableParams({
+						page: 1, 
+						count: 10,
+						sorting: {
+							'gameInstance.date': 'desc'     // initial sorting
+						}
+					},
+					{total: 0, getData: function($defer, params){
+						var orderedData = params.sorting() ?
+								$filter('orderBy')(resp.items, params.orderBy()) :
+									resp.items;
+				                params.total(orderedData.length); // set total for recalc pagination
+								$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+					}});
+	
+					$scope.tableParams.reload();
+					$scope.tableParams.count(0);
+					$scope.$apply();
+					$scope.tableParams.count(25);
+					$scope.$apply();
+				}
+				else{
+					$window.alert("no data found for name " + $scope.firstName);
+				}
+			});
+		}else{
 			gapi.client.request({
 				'path': gapiRoot + '/_ah/api/words/v1/get_all_game_task_instances',
 				'params' : {}
@@ -99,8 +123,26 @@ myApp.controller('MyCtrl1', function($window, $scope, $q, $filter, wordHandler, 
 				}});
 				//var d = new Date(resp.items[15].gameInstance.date);
 				//window.alert(d.getTimezoneOffset());
+				$scope.tableParams.reload();
+				$scope.tableParams.count(0);
+				$scope.$apply();
+				$scope.tableParams.count(25);
 				$scope.$apply();			
-			});
+			});						
+		}
+	};
+	$scope.$watch(function(scope){return scope.is_words_backend_ready;},function(newVal, oldVal){
+//		$window.alert($scope.is_words_backend_ready);
+//		gapi.client.words.getAllGameTaskInstances(requestData).execute(function(resp){
+//		$scope.tableRows = resp.items;
+//		$scope.$apply();
+//		});
+
+//		$defer.resolve($scope.tableRows);
+		if (newVal == true){
+			/*
+
+			*/
 		}
 
 	});

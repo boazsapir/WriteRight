@@ -462,6 +462,22 @@ log.info("before query");
 		  return retVal;
 	  }
 	
+	  @ApiMethod(name="getGameTaskInstancesByFirstName", path="get_game_task_instances_by_first_name/{firstName}")
+	  public List<GameTaskInstance> getGameTaskInstancesByFirstName(@Named("firstName") String firstName){
+		  List<GameTaskInstance> retVal = null;
+		  EntityManager em = emf.createEntityManager();
+		  Query query = em.createQuery("SELECT gti FROM GameTaskInstance gti where gti.gameInstance.student.firstName=:arg1");
+		  query.setParameter("arg1", firstName);
+		  retVal = query.getResultList();
+		  Collections.sort(retVal, new Comparator<GameTaskInstance>(){
 
+			@Override
+			public int compare(GameTaskInstance o1, GameTaskInstance o2) {
+				// TODO Auto-generated method stub
+				return o1.getGameInstance().getStudent().getFirstName().compareTo(o2.getGameInstance().getStudent().getFirstName());
+			}
+		  });
+		  return retVal;
+	  }
 	  
 }

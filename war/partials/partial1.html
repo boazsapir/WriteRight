@@ -2,6 +2,9 @@
  <link rel="stylesheet" href="./bower_components/bootstrap/css/bootstrap.css">
 <p>This is the partial for view 1.</p>
 <div style="width: 60%">
+Name:<input ng-model="firstName" value="">
+	<button ng-click="getReport()">Get Report</button>
+
    <p><strong>Page:</strong> {{tableParams.page()}}</p>
    <p><strong>Count per page:</strong> {{tableParams.count()}}</p>
      <button ng-click="tableParams.sorting({})" class="btn btn-default pull-right">Clear sorting</button>
